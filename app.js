@@ -1,6 +1,5 @@
 const terminal = document.getElementById("terminal");
 const loginBtn = document.getElementById("loginBtn");
-const skipBtn = document.getElementById("skipBtn");
 
 const uiUser = document.getElementById("uiUser");
 const uiPass = document.getElementById("uiPass");
@@ -45,7 +44,6 @@ async function typeLine(prefix, typedText, opts = {}) {
 
 function setButtonsEnabled(enabled) {
     loginBtn.disabled = !enabled;
-    skipBtn.disabled = !enabled;
 }
 
 function showApp() {
@@ -105,12 +103,7 @@ async function runLoginSequence() {
     showApp();
 }
 
-function skipToApp() {
-    showApp();
-}
-
 loginBtn.addEventListener("click", runLoginSequence);
-skipBtn.addEventListener("click", skipToApp);
 
 // Initial line
 terminal.innerHTML = "";
