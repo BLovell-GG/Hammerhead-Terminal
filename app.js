@@ -2,96 +2,116 @@ const terminal = document.getElementById("terminal");
 const loginBtn = document.getElementById("loginBtn");
 const skipBtn = document.getElementById("skipBtn");
 
+const uiUser = document.getElementById("uiUser");
+const uiPass = document.getElementById("uiPass");
+
 const loginPanel = document.getElementById("loginPanel");
 const appShell = document.getElementById("appShell");
 
-function addLine(text, cls = "") {
-  const div = document.createElement("div");
-  div.className = `line ${cls}`.trim();
-  div.textContent = text;
-  terminal.appendChild(div);
-  terminal.scrollTop = terminal.scrollHeight;
-  return div;
+function sleep(ms) {
+    return new Promise(res => setTimeout(res, ms));
 }
 
-function sleep(ms) {
-  return new Promise(res => setTimeout(res, ms));
+function scrollTerminal() {
+    terminal.scrollTop = terminal.scrollHeight;
+}
+
+function addLine(text, cls = "") {
+    const div = document.createElement("div");
+    div.className = `line ${cls}`.trim();
+    div.textContent = text;
+    terminal.appendChild(div);
+    scrollTerminal();
+    return div;
 }
 
 async function typeLine(prefix, typedText, opts = {}) {
-  const { speed = 25, mask = false, cls = "" } = opts;
-  const line = document.createElement("div");
-  line.className = `line cursor ${cls}`.trim();
-  line.textContent = prefix;
-  terminal.appendChild(line);
-  terminal.scrollTop = terminal.scrollHeight;
+    const { speed = 26, mask = false, cls = "" } = opts;
+    const line = document.createElement("div");
+    line.className = `line cursor ${cls}`.trim();
+    line.textContent = prefix;
+    terminal.appendChild(line);
+    scrollTerminal();
 
-  for (let i = 0; i < typedText.length; i++) {
-    const ch = typedText[i];
-    line.textContent = prefix + (mask ? "•".repeat(i + 1) : typedText.slice(0, i + 1));
-    terminal.scrollTop = terminal.scrollHeight;
-    await sleep(speed);
-  }
+    for (let i = 0; i < typedText.length; i++) {
+        line.textContent = prefix + (mask ? "•".repeat(i + 1) : typedText.slice(0, i + 1));
+        scrollTerminal();
+        await sleep(speed);
+    }
 
-  line.classList.remove("cursor");
-  return line;
+    line.classList.remove("cursor");
+    return line;
 }
 
 function setButtonsEnabled(enabled) {
-  loginBtn.disabled = !enabled;
-  skipBtn.disabled = !enabled;
+    loginBtn.disabled = !enabled;
+    skipBtn.disabled = !enabled;
 }
 
 function showApp() {
-  loginPanel.style.display = "none";
-  appShell.classList.remove("hidden");
+    loginPanel.classList.add("fadeOut");
+    setTimeout(() => {
+        loginPanel.style.display = "none";
+        appShell.classList.remove("hidden");
+    }, 460);
 }
 
 async function runLoginSequence() {
-  setButtonsEnabled(false);
-  terminal.innerHTML = "";
+    setButtonsEnabled(false);
 
-  addLine("FM-FR-2521 RELAY NODE", "dim");
-  addLine("MAINFRAME/COMM/OPERATIONS", "dim");
-  addLine("—".repeat(34), "dim");
-  await sleep(300);
+    // Reset UI
+    uiUser.textContent = "—";
+    uiPass.textContent = "—";
+    terminal.innerHTML = "";
 
-  addLine("Initializing secure session…", "dim");
-  await sleep(500);
+    addLine("FM-FR-2521 RELAY NODE", "dim");
+    addLine("MAINFRAME/COMM/OPERATIONS", "dim");
+    addLine("—".repeat(34), "dim");
+    await sleep(280);
 
-  // Auto-typed credentials (immersion only)
-  await typeLine("USERNAME: ", "CMD_101ST_NOVA", { speed: 30 });
-  await sleep(200);
-  await typeLine("PASSWORD: ", "NOVA-913-DELTA", { speed: 24, mask: true });
-  await sleep(300);
+    addLine("Initializing secure session…", "dim");
+    await sleep(420);
 
-  addLine("AUTHENTICATING…", "warn");
-  await sleep(650);
+    // Username
+    const user = "GUEST.OPERATOR";
+    uiUser.textContent = "";
+    await typeLine("USERNAME: ", user, { speed: 28 });
+    uiUser.textContent = user;
+    await sleep(180);
 
-  addLine("AUTH OK", "ok");
-  await sleep(250);
+    // Password
+    const pass = "REDACTED-ACCESS-KEY";
+    uiPass.textContent = "";
+    await typeLine("PASSWORD: ", pass, { speed: 22, mask: true });
+    uiPass.textContent = "•".repeat(12);
+    await sleep(240);
 
-  addLine("Loading BRIDGE interface…", "dim");
-  await sleep(450);
-  addLine("Syncing contract board…", "dim");
-  await sleep(450);
-  addLine("Mapping system nodes…", "dim");
-  await sleep(450);
+    addLine("AUTHENTICATING…", "warn");
+    await sleep(620);
 
-  addLine("READY", "ok");
-  await sleep(400);
+    addLine("AUTH OK", "ok");
+    await sleep(200);
 
-  // Transition
-  showApp();
+    addLine("Loading BRIDGE interface…", "dim");
+    await sleep(360);
+    addLine("Syncing contract board…", "dim");
+    await sleep(360);
+    addLine("Mapping system nodes…", "dim");
+    await sleep(360);
+
+    addLine("READY", "ok");
+    await sleep(320);
+
+    showApp();
 }
 
 function skipToApp() {
-  showApp();
+    showApp();
 }
 
 loginBtn.addEventListener("click", runLoginSequence);
 skipBtn.addEventListener("click", skipToApp);
 
-// Optional: auto-show a hint line on load
+// Initial line
 terminal.innerHTML = "";
 addLine("Awaiting user interaction…", "dim");

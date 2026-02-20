@@ -1,71 +1,125 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hammerhead Terminal</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Hammerhead Terminal</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-  <main class="wrap">
+    <main class="wrap">
 
-    <!-- LOGIN PANEL -->
-    <section class="panel" id="loginPanel" aria-label="Terminal Login">
-      <div class="kicker">FM-FR-2521</div>
-      <h1>UNSC COMMAND TERMINAL</h1>
+        <!-- LOGIN PANEL -->
+        <section class="panel" id="loginPanel" aria-label="Terminal Login">
 
-      <div class="status">
-        <span class="dot"></span>
-        STATUS: ONLINE
-      </div>
+            <header class="hdr">
+                <div class="kicker">FM-FR-2521</div>
+                <div class="stamp">
+                    <div class="stampRow">
+                        <span class="dim">CLEARANCE</span> / <span class="ok">GUEST</span>
+                    </div>
+                    <div class="stampRow">
+                        <span class="dim">NODE</span> / RELAY-01
+                    </div>
+                </div>
+            </header>
 
-      <div class="divider"></div>
+            <h1 class="title">UNSC COMMAND TERMINAL</h1>
 
-      <div class="terminal" id="terminal">
-        <div class="line dim">Awaiting user interaction…</div>
-      </div>
+            <div class="status">
+                <span class="dot"></span>
+                STATUS: ONLINE
+            </div>
 
-      <div class="actions">
-        <button class="btn" id="loginBtn" type="button">LOGIN</button>
-        <button class="btn ghost" id="skipBtn" type="button" title="Skips the animation">SKIP</button>
-      </div>
+            <div class="divider"></div>
 
-      <div class="hint">
-        NOTE: Unauthorized access will be logged.
-      </div>
-    </section>
+            <!-- AUTH MODULE -->
+            <section class="auth">
 
-    <!-- APP SHELL (hidden until login completes) -->
-    <section class="app hidden" id="appShell" aria-label="System Map">
-      <div class="appTop">
-        <div class="appTitle">BRIDGE / SYSTEM MAP</div>
-        <div class="appSub">FM-FR-2521 • RELAY STATUS: ACTIVE</div>
-      </div>
+                <div class="authTop">
+                    <div class="authTitle">ACCESS CONTROL</div>
+                    <div class="authTag">AUTH // RELAY NODE</div>
+                </div>
 
-      <div class="appBody">
-        <div class="mapPane">
-          <div class="mapPlaceholder">
-            <div class="mapBig">SYSTEM MAP</div>
-            <div class="mapSmall">UI next: planets + orbits + region overlay.</div>
-          </div>
-        </div>
+                <div class="authBody">
 
-        <aside class="infoPane">
-          <div class="infoHeader">NODE DATA</div>
-          <div class="infoBlock">
-            <div class="infoKey">Selection</div>
-            <div class="infoVal">None</div>
-          </div>
-          <div class="infoBlock">
-            <div class="infoKey">Hint</div>
-            <div class="infoVal">Click a planet to view regions & contracts.</div>
-          </div>
-        </aside>
-      </div>
-    </section>
+                    <!-- LEFT SIDE: LOGIN FIELDS -->
+                    <div class="fields">
 
-  </main>
+                        <div class="field">
+                            <div class="label">USERNAME</div>
+                            <div class="value" id="uiUser">—</div>
+                        </div>
 
-  <script src="app.js"></script>
+                        <div class="field">
+                            <div class="label">PASSWORD</div>
+                            <div class="value" id="uiPass">—</div>
+                        </div>
+
+                        <div class="actions authActions">
+                            <button class="btn" id="loginBtn" type="button">LOGIN</button>
+                            <button class="btn ghost" id="skipBtn" type="button"
+                                title="Skips the animation">SKIP</button>
+                        </div>
+
+                        <div class="note">
+                            NOTE: UNAUTHORIZED ACCESS WILL BE LOGGED.
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT SIDE: AUTH LOG -->
+                    <div class="termWrap">
+                        <div class="termTop">
+                            <span>AUTH LOG</span>
+                            <span class="dim">LIVE</span>
+                        </div>
+
+                        <div class="terminal" id="terminal">
+                            <div class="line dim">Awaiting user interaction…</div>
+                        </div>
+                    </div>
+
+                </div> <!-- END authBody -->
+
+            </section> <!-- END auth -->
+
+        </section> <!-- END loginPanel -->
+
+        <!-- APP SHELL (hidden until login completes) -->
+        <section class="app hidden" id="appShell" aria-label="System Map">
+            <div class="appTop">
+                <div class="appTitle">BRIDGE / SYSTEM MAP</div>
+                <div class="appSub">FM-FR-2521 • RELAY STATUS: ACTIVE</div>
+            </div>
+
+            <div class="appBody">
+                <div class="mapPane">
+                    <div class="mapPlaceholder">
+                        <div class="mapBig">SYSTEM MAP</div>
+                        <div class="mapSmall">UI next: planets + orbits + region overlay.</div>
+                    </div>
+                </div>
+
+                <aside class="infoPane">
+                    <div class="infoHeader">NODE DATA</div>
+                    <div class="infoBlock">
+                        <div class="infoKey">Selection</div>
+                        <div class="infoVal">None</div>
+                    </div>
+                    <div class="infoBlock">
+                        <div class="infoKey">Hint</div>
+                        <div class="infoVal">Click a planet to view regions & contracts.</div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
 </body>
+
 </html>
