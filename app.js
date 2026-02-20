@@ -73,16 +73,16 @@ async function runLoginSequence() {
     await sleep(420);
 
     // Username
-    const user = "GUEST.OPERATOR";
+    const user = "CMD_101ST_NOVA";
     uiUser.textContent = "";
-    await typeLine("USERNAME: ", user, { speed: 28 });
+    await typeLine("USERNAME: ", user, { speed: 78 });
     uiUser.textContent = user;
     await sleep(180);
 
     // Password
-    const pass = "REDACTED-ACCESS-KEY";
+    const pass = "NOVA-913-DELTA";
     uiPass.textContent = "";
-    await typeLine("PASSWORD: ", pass, { speed: 22, mask: true });
+    await typeLine("PASSWORD: ", pass, { speed: 46, mask: true });
     uiPass.textContent = "•".repeat(12);
     await sleep(240);
 
