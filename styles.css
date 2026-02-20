@@ -542,3 +542,10 @@ body::after {
 .mVol{
   width:120px;
 }
+
+.musicHud.playing {
+  box-shadow:
+    0 0 0 1px rgba(0,200,255,.12),
+    0 0 20px rgba(0,200,255,.12),
+    0 20px 70px rgba(0,0,0,.6);
+}

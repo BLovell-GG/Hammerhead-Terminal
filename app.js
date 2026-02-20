@@ -37,16 +37,28 @@ function loadTrack(index) {
 
 async function playMusic() {
   try {
+    music.volume = 0;
     await music.play();
     musicToggle.textContent = "PAUSE";
-  } catch (e) {
-    // Browser blocked (no user gesture yet) — safe to ignore
-  }
+    document.getElementById("musicHud").classList.add("playing");
+
+    const targetVolume = Number(musicVol.value) / 100;
+    const fadeDuration = 2000;
+    const steps = 40;
+    const stepTime = fadeDuration / steps;
+
+    for (let i = 0; i <= steps; i++) {
+      music.volume = (targetVolume * i) / steps;
+      await new Promise(r => setTimeout(r, stepTime));
+    }
+
+  } catch (e) {}
 }
 
 function pauseMusic() {
   music.pause();
   musicToggle.textContent = "PLAY";
+  document.getElementById("musicHud").classList.remove("playing");
 }
 
 musicToggle.addEventListener("click", () => {
