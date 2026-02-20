@@ -8,16 +8,62 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="panel">
+
+    <!-- LOGIN PANEL -->
+    <section class="panel" id="loginPanel" aria-label="Terminal Login">
       <div class="kicker">FM-FR-2521</div>
-      <h1>HAMMERHEAD TERMINAL</h1>
+      <h1>UNSC COMMAND TERMINAL</h1>
+
       <div class="status">
         <span class="dot"></span>
         STATUS: ONLINE
       </div>
-      <p class="sub">Cloudflare Pages deployment confirmed.</p>
-      <p class="hint">Next: System Map UI initialization.</p>
-    </div>
+
+      <div class="divider"></div>
+
+      <div class="terminal" id="terminal">
+        <div class="line dim">Awaiting user interaction…</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="loginBtn" type="button">LOGIN</button>
+        <button class="btn ghost" id="skipBtn" type="button" title="Skips the animation">SKIP</button>
+      </div>
+
+      <div class="hint">
+        NOTE: Unauthorized access will be logged.
+      </div>
+    </section>
+
+    <!-- APP SHELL (hidden until login completes) -->
+    <section class="app hidden" id="appShell" aria-label="System Map">
+      <div class="appTop">
+        <div class="appTitle">BRIDGE / SYSTEM MAP</div>
+        <div class="appSub">FM-FR-2521 • RELAY STATUS: ACTIVE</div>
+      </div>
+
+      <div class="appBody">
+        <div class="mapPane">
+          <div class="mapPlaceholder">
+            <div class="mapBig">SYSTEM MAP</div>
+            <div class="mapSmall">UI next: planets + orbits + region overlay.</div>
+          </div>
+        </div>
+
+        <aside class="infoPane">
+          <div class="infoHeader">NODE DATA</div>
+          <div class="infoBlock">
+            <div class="infoKey">Selection</div>
+            <div class="infoVal">None</div>
+          </div>
+          <div class="infoBlock">
+            <div class="infoKey">Hint</div>
+            <div class="infoVal">Click a planet to view regions & contracts.</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
   </main>
 
   <script src="app.js"></script>
