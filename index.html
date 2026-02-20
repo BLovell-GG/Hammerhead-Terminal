@@ -11,29 +11,8 @@
 <body>
     <main class="wrap">
 
-        <!-- BOOT SCREEN (new) -->
-        <div id="bootScreen" class="screen boot-screen hidden" aria-hidden="true">
-            <div class="panel">
-                <div class="panel-header">
-                    <span class="tag">UNSC//FR-2521</span>
-                    <span class="tag dim">SYSTEM BOOT</span>
-                </div>
-
-                <div id="bootLog" class="boot-log"></div>
-
-                <div class="boot-footer">
-                    <div class="boot-progress">
-                        <div id="bootBar" class="boot-bar"></div>
-                    </div>
-                    <div id="bootHint" class="boot-hint dim">
-                        INPUT REQUIRED: CLICK / PRESS ANY KEY
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- LOGIN PANEL -->
-        <section class="panel" id="loginPanel" aria-label="Terminal Login">
+<section class="panel" id="loginPanel" aria-label="Terminal Login">
 
             <header class="hdr">
                 <div class="kicker">FM-FR-2521</div>
@@ -49,15 +28,21 @@
 
             <h1 class="title">UNSC COMMAND TERMINAL</h1>
 
-            <div class="status">
+            <div class="status off" id="terminalStatus">
                 <span class="dot"></span>
-                STATUS: ONLINE
+                STATUS: OFFLINE
+            </div>
+
+
+            <div class="powerRow">
+                <button class="btn" id="powerBtn" type="button">POWER ON</button>
+                <div class="powerNote dim" id="powerNote">Terminal power is offline. Activation required.</div>
             </div>
 
             <div class="divider"></div>
 
             <!-- AUTH MODULE -->
-            <section class="auth">
+            <section class="auth hidden" id="authModule">
 
                 <div class="authTop">
                     <div class="authTitle">ACCESS CONTROL</div>

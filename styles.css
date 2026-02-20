@@ -5,11 +5,11 @@
     --line2: #15425e;
     --text: #cfd8e3;
     --muted: #7f9ab1;
-    --accent: #3da0ff;
-    --accent2: #7fc4ff;
-    --ok: #6fb4ff;
-    --warn: #ffc36a;
-    --danger: #ff4a4a;
+    --accent: #00c8ff;
+    --accent2: #46e3ff;
+    --ok: #7dffb2;
+    --warn: #ffd27d;
+    --danger: #ff3b3b;
 }
 
 * {
@@ -30,23 +30,42 @@ body {
     overflow: hidden;
 }
 
-/* ===== grid + scanlines ===== */
+/* ===== subtle animated grid + watermark + scanlines ===== */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background:
+    pointer-events: none;
+    z-index: 0;
+
+    /* Add your watermark asset here (SVG/PNG). If the file doesn't exist, it just won't show. */
+    background-image:
+        url("assets/unsc-watermark.svg"),
         linear-gradient(rgba(0, 200, 255, .05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 200, 255, .03) 1px, transparent 1px);
-    background-size: 48px 48px, 48px 48px;
+
+    background-repeat: no-repeat, repeat, repeat;
+    background-size: 640px, 48px 48px, 48px 48px;
+    background-position: right -140px bottom -90px, 0 0, 0 0;
+
     opacity: .22;
-    pointer-events: none;
+    mix-blend-mode: screen;
+
+    animation: gridDrift 42s linear infinite;
 }
+
+@keyframes gridDrift {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-120px, -80px, 0); }
+}
+
 
 body::after {
     content: "";
     position: fixed;
     inset: 0;
+    pointer-events: none;
+    z-index: 0;
     background: repeating-linear-gradient(to bottom,
             rgba(255, 255, 255, .02),
             rgba(255, 255, 255, .02) 1px,
@@ -54,10 +73,16 @@ body::after {
             transparent 4px);
     opacity: .10;
     mix-blend-mode: overlay;
-    pointer-events: none;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    body::before { animation: none !important; }
+}
+
+
 .wrap {
+    position: relative;
+    z-index: 1;
     height: 100%;
     display: flex;
     align-items: center;
@@ -153,6 +178,7 @@ body::after {
 }
 
 .status {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -565,45 +591,39 @@ body::after {
     z-index: 50;
 }
 
-/* ---------- BOOT SCREEN ---------- */
-
 .boot-screen {
-    background:
-        radial-gradient(circle at 30% 20%, rgba(80, 140, 220, 0.08), transparent 55%),
-        radial-gradient(circle at 70% 80%, rgba(80, 140, 220, 0.06), transparent 60%),
+    background: radial-gradient(circle at 30% 20%, rgba(90, 255, 190, 0.08), transparent 55%),
+        radial-gradient(circle at 70% 80%, rgba(90, 255, 190, 0.06), transparent 60%),
         rgba(0, 0, 0, 0.92);
 }
 
-/* IMPORTANT: scoped to boot only */
-.boot-screen .panel {
+.panel {
     width: min(920px, 95vw);
-    border: 1px solid var(--line);
-    box-shadow:
-        0 0 0 1px var(--line),
-        0 18px 80px rgba(0, 0, 0, 0.6);
-    background: rgba(8, 18, 28, 0.75);
+    border: 1px solid rgba(90, 255, 190, 0.28);
+    box-shadow: 0 0 0 1px rgba(90, 255, 190, 0.10), 0 18px 80px rgba(0, 0, 0, 0.6);
+    background: rgba(6, 12, 10, 0.75);
     backdrop-filter: blur(6px);
     border-radius: 12px;
     overflow: hidden;
 }
 
-.boot-screen .panel-header {
+.panel-header {
     display: flex;
     gap: 10px;
     padding: 12px 14px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgba(90, 255, 190, 0.18);
 }
 
-.boot-screen .tag {
+.tag {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: rgba(90, 255, 190, 0.9);
 }
 
-.boot-screen .dim {
-    opacity: 0.6;
+.dim {
+    opacity: 0.65;
 }
 
 .boot-log {
@@ -613,20 +633,20 @@ body::after {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 13px;
     line-height: 1.45;
-    color: var(--text);
+    color: rgba(215, 255, 240, 0.92);
     white-space: pre-wrap;
 }
 
 .boot-footer {
     padding: 12px 14px 14px;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(90, 255, 190, 0.18);
     display: grid;
     gap: 10px;
 }
 
 .boot-progress {
     height: 10px;
-    border: 1px solid var(--line);
+    border: 1px solid rgba(90, 255, 190, 0.25);
     border-radius: 999px;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.35);
@@ -635,8 +655,8 @@ body::after {
 .boot-bar {
     height: 100%;
     width: 0%;
-    background: var(--accent);
-    box-shadow: 0 0 14px rgba(80, 140, 220, 0.4);
+    background: rgba(90, 255, 190, 0.75);
+    box-shadow: 0 0 18px rgba(90, 255, 190, 0.35);
     transition: width 220ms linear;
 }
 
@@ -647,8 +667,7 @@ body::after {
     text-transform: uppercase;
 }
 
-/* ---------- APP SHELL ---------- */
-
+/* APP SHELL */
 .app-shell {
     position: fixed;
     inset: 0;
@@ -659,7 +678,7 @@ body::after {
 }
 
 .side-nav {
-    border-right: 1px solid var(--line);
+    border-right: 1px solid rgba(90, 255, 190, 0.18);
     padding: 18px 16px;
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -670,7 +689,7 @@ body::after {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: rgba(90, 255, 190, 0.95);
     font-size: 14px;
 }
 
@@ -679,7 +698,6 @@ body::after {
     font-size: 12px;
     letter-spacing: 0.10em;
     text-transform: uppercase;
-    color: var(--muted);
 }
 
 .nav {
@@ -688,25 +706,20 @@ body::after {
 }
 
 .nav-item {
-    border: 1px solid var(--line);
-    background: rgba(10, 20, 30, 0.55);
-    color: var(--text);
+    border: 1px solid rgba(90, 255, 190, 0.18);
+    background: rgba(10, 20, 16, 0.55);
+    color: rgba(215, 255, 240, 0.92);
     padding: 12px;
     border-radius: 10px;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     letter-spacing: 0.10em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.nav-item:hover {
-    border-color: var(--line-strong);
 }
 
 .nav-item.active {
-    border-color: var(--line-strong);
-    box-shadow: 0 0 0 1px var(--line-strong);
+    border-color: rgba(90, 255, 190, 0.45);
+    box-shadow: 0 0 0 1px rgba(90, 255, 190, 0.12);
 }
 
 .main {
@@ -718,7 +731,7 @@ body::after {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgba(90, 255, 190, 0.18);
     padding: 16px 18px;
 }
 
@@ -726,7 +739,7 @@ body::after {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: rgba(90, 255, 190, 0.95);
 }
 
 .topbar-right {
@@ -735,15 +748,15 @@ body::after {
 }
 
 .chip {
-    border: 1px solid var(--line);
-    background: rgba(10, 20, 30, 0.45);
+    border: 1px solid rgba(90, 255, 190, 0.18);
+    background: rgba(10, 20, 16, 0.45);
     padding: 8px 10px;
     border-radius: 999px;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 12px;
     letter-spacing: 0.10em;
     text-transform: uppercase;
-    color: var(--text);
+    color: rgba(215, 255, 240, 0.9);
 }
 
 .view {
@@ -751,8 +764,7 @@ body::after {
     overflow: auto;
 }
 
-/* ---------- SHARED UI ---------- */
-
+/* Shared UI blocks */
 .grid {
     display: grid;
     gap: 14px;
@@ -767,8 +779,8 @@ body::after {
 }
 
 .card {
-    border: 1px solid var(--line);
-    background: rgba(10, 20, 30, 0.40);
+    border: 1px solid rgba(90, 255, 190, 0.18);
+    background: rgba(10, 20, 16, 0.40);
     border-radius: 12px;
     padding: 14px;
 }
@@ -779,7 +791,7 @@ body::after {
     letter-spacing: 0.12em;
     text-transform: uppercase;
     font-size: 13px;
-    color: var(--accent);
+    color: rgba(90, 255, 190, 0.9);
 }
 
 .table {
@@ -791,14 +803,14 @@ body::after {
 
 .table th,
 .table td {
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid rgba(90, 255, 190, 0.14);
     padding: 10px 8px;
     text-align: left;
-    color: var(--text);
+    color: rgba(215, 255, 240, 0.92);
 }
 
 .table th {
-    color: var(--accent);
+    color: rgba(90, 255, 190, 0.9);
     letter-spacing: 0.10em;
     text-transform: uppercase;
     font-size: 12px;
@@ -808,110 +820,76 @@ body::after {
     display: inline-block;
     padding: 4px 8px;
     border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgba(10, 20, 30, 0.45);
+    border: 1px solid rgba(90, 255, 190, 0.22);
+    background: rgba(10, 20, 16, 0.45);
     font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+}
+
+/* ===== POWER GATE (terminal OFF -> POWER ON -> LOGIN) ===== */
+.status.off {
+    border-color: rgba(255, 210, 125, .22);
+    background: rgba(0, 0, 0, .20);
+}
+.status.off .dot {
+    background: var(--warn);
+    box-shadow: 0 0 14px rgba(255, 210, 125, .18);
+}
+.status.online .dot {
+    background: var(--accent);
+    box-shadow: 0 0 18px rgba(0, 200, 255, .22);
+}
+
+.powerRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 10px 0 12px;
+}
+
+.powerRow .btn {
+    min-width: 148px;
+}
+
+.powerNote {
+    flex: 1;
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+/* ===== APP NAV BUTTONS (match LOGIN button) ===== */
+.appNav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.navBtn {
+    border: 1px solid rgba(0, 200, 255, .28);
+    background: rgba(0, 200, 255, .10);
     color: var(--text);
+    padding: 8px 12px;
+    border-radius: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .02);
+    font-size: 11px;
 }
 
-/* ---------- SUBTLE UNSC GRID OVERLAY ---------- */
-/* Put this near the end of styles.css */
-
-body {
-    position: relative;
-    /* needed for pseudo elements */
-    overflow-x: hidden;
+.navBtn:hover {
+    box-shadow:
+        0 0 0 1px rgba(0, 200, 255, .20),
+        0 0 22px rgba(0, 200, 255, .10),
+        inset 0 0 0 1px rgba(255, 255, 255, .02);
 }
 
-/* The grid */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-
-    background-image:
-        url("/assets/unsc-mark.svg"),
-        /* watermark */
-        linear-gradient(to right, rgba(110, 180, 255, 0.06) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(110, 180, 255, 0.06) 1px, transparent 1px);
-
-    background-position:
-        left 80px top 120px,
-        0 0,
-        0 0;
-
-    background-size:
-        420px,
-        36px 36px,
-        36px 36px;
-
-    filter: drop-shadow(0 0 14px rgba(110, 180, 255, 0.25));
-
-    background-repeat:
-        no-repeat,
-        repeat,
-        repeat;
-
-    opacity: 0.12;
-    /* subtle */
-    mix-blend-mode: screen;
-
-    animation: unscGridDrift 38s linear infinite;
+.navBtn.active {
+    border-color: rgba(0, 200, 255, .55);
+    background: rgba(0, 200, 255, .16);
 }
 
-/* A soft scanning sweep */
-body::after {
-    content: "";
-    position: fixed;
-    inset: -20%;
-    pointer-events: none;
-    z-index: 0;
-
-    background:
-        radial-gradient(circle at 50% 50%, rgba(110, 180, 255, 0.08), transparent 55%),
-        linear-gradient(115deg, transparent 40%, rgba(110, 180, 255, 0.07), transparent 60%);
-
-    opacity: 0.35;
-    filter: blur(0.2px);
-
-    animation: unscSweep 14s ease-in-out infinite;
-}
-
-@keyframes unscGridDrift {
-    0% {
-        transform: translate3d(0, 0, 0);
-    }
-
-    100% {
-        transform: translate3d(-120px, -80px, 0);
-    }
-}
-
-@keyframes unscSweep {
-    0% {
-        transform: translate3d(-6%, -4%, 0) rotate(0.5deg);
-        opacity: 0.22;
-    }
-
-    50% {
-        transform: translate3d(6%, 4%, 0) rotate(-0.5deg);
-        opacity: 0.38;
-    }
-
-    100% {
-        transform: translate3d(-6%, -4%, 0) rotate(0.5deg);
-        opacity: 0.22;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    body::before,
-    body::after {
-        animation: none !important;
-    }
-}
