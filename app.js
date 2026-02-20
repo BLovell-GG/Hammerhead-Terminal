@@ -132,6 +132,7 @@ function showApp() {
 }
 
 async function runLoginSequence() {
+    appState = "LOGGING_IN";
     setButtonsEnabled(false);
 
     // Reset UI
@@ -177,11 +178,76 @@ async function runLoginSequence() {
     addLine("READY", "ok");
     await sleep(320);
 
+    // If you want music to fade in automatically on successful login:
+    // (Safe now because the user already interacted to start the boot.)
+    if (music && music.paused) {
+        playMusic();
+    }
+
     showApp();
+    appState = "APP";
 }
 
-loginBtn.addEventListener("click", runLoginSequence);
+loginBtn.addEventListener("click", () => {
+    // After boot completes, LOGIN can be manually re-run if desired.
+    if (appState === "LOGIN_READY") runLoginSequence();
+});
+
+// ===== BOOT GATE (first interaction) =====
+let appState = "BOOT_WAIT"; // BOOT_WAIT -> BOOTING -> LOGIN_READY -> LOGGING_IN -> APP
+
+const BOOT_LINES = [
+    "UNSC RELAY NODE // FM-FR-2521",
+    "HARDWARE CHECK .......... OK",
+    "MEMORY MAP .............. OK",
+    "CRYPTO MODULE ........... ONLINE",
+    "LINK HANDSHAKE .......... PENDING",
+    "AUTH GATE ............... STANDBY",
+    "LOADING TERMINAL ........",
+];
+
+async function runBootSequence() {
+    appState = "BOOTING";
+    setButtonsEnabled(false);
+    terminal.innerHTML = "";
+    addLine("INPUT REQUIRED: CLICK / PRESS ANY KEY", "dim");
+    await sleep(220);
+
+    terminal.innerHTML = "";
+    addLine("SYSTEM BOOT", "dim");
+    addLine("—".repeat(34), "dim");
+    await sleep(220);
+
+    for (const line of BOOT_LINES) {
+        // Type each boot line quickly for that “console” feel
+        await typeLine("", line, { speed: 12, cls: "dim" });
+        await sleep(120);
+    }
+
+    addLine("BOOT COMPLETE", "ok");
+    await sleep(220);
+
+    appState = "LOGIN_READY";
+    // Auto-run login animation immediately after boot.
+    runLoginSequence();
+}
+
+function armFirstInteractionBoot() {
+    let armed = true;
+    const handler = () => {
+        if (!armed) return;
+        if (appState !== "BOOT_WAIT") return;
+        armed = false;
+        window.removeEventListener("pointerdown", handler);
+        window.removeEventListener("keydown", handler);
+        runBootSequence();
+    };
+    window.addEventListener("pointerdown", handler, { passive: true });
+    window.addEventListener("keydown", handler);
+}
 
 // Initial line
 terminal.innerHTML = "";
-addLine("Awaiting user interaction…", "dim");
+addLine("INPUT REQUIRED: CLICK / PRESS ANY KEY", "dim");
+setButtonsEnabled(false);
+armFirstInteractionBoot();

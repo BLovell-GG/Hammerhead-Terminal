@@ -474,78 +474,329 @@ body::after {
 }
 
 /* ===== Music Player HUD ===== */
-.musicHud{
-  position:fixed;
-  bottom:18px;
-  right:18px;
-  z-index:50;
+.musicHud {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    z-index: 50;
 
-  display:flex;
-  align-items:center;
-  gap:14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
 
-  padding:12px 14px;
-  border-radius:12px;
-  border:1px solid rgba(0,200,255,.18);
-  background:rgba(0,0,0,.25);
-  box-shadow:0 0 0 1px rgba(0,200,255,.08), 0 20px 70px rgba(0,0,0,.6);
-  backdrop-filter: blur(6px);
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 200, 255, .18);
+    background: rgba(0, 0, 0, .25);
+    box-shadow: 0 0 0 1px rgba(0, 200, 255, .08), 0 20px 70px rgba(0, 0, 0, .6);
+    backdrop-filter: blur(6px);
 }
 
-.musicInfo{ min-width: 220px; }
-
-.musicLabel{
-  font-size:11px;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  color:var(--muted);
-  font-weight:900;
+.musicInfo {
+    min-width: 220px;
 }
 
-.musicTrack{
-  margin-top:4px;
-  font-size:12px;
-  font-weight:800;
-  letter-spacing:.10em;
-  text-transform:uppercase;
-  white-space: nowrap;
-  overflow:hidden;
-  text-overflow: ellipsis;
-  max-width: 260px;
+.musicLabel {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 900;
 }
 
-.musicControls{
-  display:flex;
-  align-items:center;
-  gap:8px;
+.musicTrack {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 260px;
 }
 
-.mBtn{
-  border:1px solid rgba(0,200,255,.28);
-  background: rgba(0,200,255,.10);
-  color:var(--text);
-  padding:6px 10px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:900;
+.musicControls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.mBtn:hover{
-  box-shadow:0 0 14px rgba(0,200,255,.2);
+.mBtn {
+    border: 1px solid rgba(0, 200, 255, .28);
+    background: rgba(0, 200, 255, .10);
+    color: var(--text);
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 900;
 }
 
-.mBtn:disabled{
-  opacity:.5;
-  cursor:not-allowed;
+.mBtn:hover {
+    box-shadow: 0 0 14px rgba(0, 200, 255, .2);
 }
 
-.mVol{
-  width:120px;
+.mBtn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.mVol {
+    width: 120px;
 }
 
 .musicHud.playing {
-  box-shadow:
-    0 0 0 1px rgba(0,200,255,.12),
-    0 0 20px rgba(0,200,255,.12),
-    0 20px 70px rgba(0,0,0,.6);
+    box-shadow:
+        0 0 0 1px rgba(0, 200, 255, .12),
+        0 0 20px rgba(0, 200, 255, .12),
+        0 20px 70px rgba(0, 0, 0, .6);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.screen {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    z-index: 50;
+}
+
+.boot-screen {
+    background: radial-gradient(circle at 30% 20%, rgba(90, 255, 190, 0.08), transparent 55%),
+        radial-gradient(circle at 70% 80%, rgba(90, 255, 190, 0.06), transparent 60%),
+        rgba(0, 0, 0, 0.92);
+}
+
+.panel {
+    width: min(920px, 95vw);
+    border: 1px solid rgba(90, 255, 190, 0.28);
+    box-shadow: 0 0 0 1px rgba(90, 255, 190, 0.10), 0 18px 80px rgba(0, 0, 0, 0.6);
+    background: rgba(6, 12, 10, 0.75);
+    backdrop-filter: blur(6px);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.panel-header {
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(90, 255, 190, 0.18);
+}
+
+.tag {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(90, 255, 190, 0.9);
+}
+
+.dim {
+    opacity: 0.65;
+}
+
+.boot-log {
+    padding: 14px;
+    height: 380px;
+    overflow: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgba(215, 255, 240, 0.92);
+    white-space: pre-wrap;
+}
+
+.boot-footer {
+    padding: 12px 14px 14px;
+    border-top: 1px solid rgba(90, 255, 190, 0.18);
+    display: grid;
+    gap: 10px;
+}
+
+.boot-progress {
+    height: 10px;
+    border: 1px solid rgba(90, 255, 190, 0.25);
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.boot-bar {
+    height: 100%;
+    width: 0%;
+    background: rgba(90, 255, 190, 0.75);
+    box-shadow: 0 0 18px rgba(90, 255, 190, 0.35);
+    transition: width 220ms linear;
+}
+
+.boot-hint {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* APP SHELL */
+.app-shell {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 10;
+}
+
+.side-nav {
+    border-right: 1px solid rgba(90, 255, 190, 0.18);
+    padding: 18px 16px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 18px;
+}
+
+.brand-title {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(90, 255, 190, 0.95);
+    font-size: 14px;
+}
+
+.brand-sub {
+    margin-top: 6px;
+    font-size: 12px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+}
+
+.nav {
+    display: grid;
+    gap: 10px;
+}
+
+.nav-item {
+    border: 1px solid rgba(90, 255, 190, 0.18);
+    background: rgba(10, 20, 16, 0.55);
+    color: rgba(215, 255, 240, 0.92);
+    padding: 12px;
+    border-radius: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.nav-item.active {
+    border-color: rgba(90, 255, 190, 0.45);
+    box-shadow: 0 0 0 1px rgba(90, 255, 190, 0.12);
+}
+
+.main {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(90, 255, 190, 0.18);
+    padding: 16px 18px;
+}
+
+.view-title {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(90, 255, 190, 0.95);
+}
+
+.topbar-right {
+    display: flex;
+    gap: 10px;
+}
+
+.chip {
+    border: 1px solid rgba(90, 255, 190, 0.18);
+    background: rgba(10, 20, 16, 0.45);
+    padding: 8px 10px;
+    border-radius: 999px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(215, 255, 240, 0.9);
+}
+
+.view {
+    padding: 18px;
+    overflow: auto;
+}
+
+/* Shared UI blocks */
+.grid {
+    display: grid;
+    gap: 14px;
+}
+
+.grid.cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid.cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card {
+    border: 1px solid rgba(90, 255, 190, 0.18);
+    background: rgba(10, 20, 16, 0.40);
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.card h3 {
+    margin: 0 0 10px 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 13px;
+    color: rgba(90, 255, 190, 0.9);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+}
+
+.table th,
+.table td {
+    border-bottom: 1px solid rgba(90, 255, 190, 0.14);
+    padding: 10px 8px;
+    text-align: left;
+    color: rgba(215, 255, 240, 0.92);
+}
+
+.table th {
+    color: rgba(90, 255, 190, 0.9);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(90, 255, 190, 0.22);
+    background: rgba(10, 20, 16, 0.45);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }

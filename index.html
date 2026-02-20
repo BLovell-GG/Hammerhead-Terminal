@@ -11,6 +11,27 @@
 <body>
     <main class="wrap">
 
+        <!-- BOOT SCREEN (new) -->
+        <div id="bootScreen" class="screen boot-screen hidden" aria-hidden="true">
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="tag">UNSC//FR-2521</span>
+                    <span class="tag dim">SYSTEM BOOT</span>
+                </div>
+
+                <div id="bootLog" class="boot-log"></div>
+
+                <div class="boot-footer">
+                    <div class="boot-progress">
+                        <div id="bootBar" class="boot-bar"></div>
+                    </div>
+                    <div id="bootHint" class="boot-hint dim">
+                        INPUT REQUIRED: CLICK / PRESS ANY KEY
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- LOGIN PANEL -->
         <section class="panel" id="loginPanel" aria-label="Terminal Login">
 
@@ -91,6 +112,12 @@
             <div class="appTop">
                 <div class="appTitle">BRIDGE / SYSTEM MAP</div>
                 <div class="appSub">FM-FR-2521 • RELAY STATUS: ACTIVE</div>
+                <div class="appNav">
+                    <button class="navBtn active" data-route="map">SYSTEM</button>
+                    <button class="navBtn" data-route="contracts">CONTRACTS</button>
+                    <button class="navBtn" data-route="factions">FACTIONS</button>
+                    <button class="navBtn" data-route="ship">SHIP</button>
+                </div>
             </div>
 
             <div class="appBody">
