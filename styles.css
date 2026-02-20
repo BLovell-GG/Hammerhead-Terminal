@@ -472,3 +472,73 @@ body::after {
         overflow: auto;
     }
 }
+
+/* ===== Music Player HUD ===== */
+.musicHud{
+  position:fixed;
+  bottom:18px;
+  right:18px;
+  z-index:50;
+
+  display:flex;
+  align-items:center;
+  gap:14px;
+
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid rgba(0,200,255,.18);
+  background:rgba(0,0,0,.25);
+  box-shadow:0 0 0 1px rgba(0,200,255,.08), 0 20px 70px rgba(0,0,0,.6);
+  backdrop-filter: blur(6px);
+}
+
+.musicInfo{ min-width: 220px; }
+
+.musicLabel{
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:900;
+}
+
+.musicTrack{
+  margin-top:4px;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+.musicControls{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.mBtn{
+  border:1px solid rgba(0,200,255,.28);
+  background: rgba(0,200,255,.10);
+  color:var(--text);
+  padding:6px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:900;
+}
+
+.mBtn:hover{
+  box-shadow:0 0 14px rgba(0,200,255,.2);
+}
+
+.mBtn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.mVol{
+  width:120px;
+}

@@ -117,6 +117,21 @@
 
     </main>
 
+    <!-- MUSIC HUD -->
+    <div class="musicHud" id="musicHud" aria-label="Music Player">
+        <div class="musicInfo">
+            <div class="musicLabel">BATTLE NET AUDIO</div>
+            <div class="musicTrack" id="musicTrack">NO SIGNAL</div>
+        </div>
+
+        <div class="musicControls">
+            <button class="mBtn" id="prevTrack" type="button">◀</button>
+            <button class="mBtn" id="musicToggle" type="button">PLAY</button>
+            <button class="mBtn" id="nextTrack" type="button">▶</button>
+            <input class="mVol" id="musicVol" type="range" min="0" max="100" value="35" />
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 
