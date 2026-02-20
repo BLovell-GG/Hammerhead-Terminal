@@ -1,0 +1,1 @@
+console.log("Hammerhead Terminal: ONLINE");
