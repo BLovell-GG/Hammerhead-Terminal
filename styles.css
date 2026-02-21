@@ -39,7 +39,7 @@ body {
     color: var(--text);
     background:
         radial-gradient(1200px 800px at 50% 30%, #0b2a3f 0%, var(--bg) 60%, #03070b 100%);
-    overflow: hidden;
+    overflow: visible;
 }
 
 /* ===== subtle animated grid + watermark + scanlines ===== */
@@ -476,10 +476,9 @@ body::after {
     border-radius: 12px;
     padding: 18px;
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
     gap: 12px;
-    /* Allow the sidebar drawer to render OUTSIDE the terminal frame (left empty space). */
-    overflow: visible;
+    overflow: hidden;
 }
 
 .app.hidden {
@@ -512,10 +511,13 @@ body::after {
     grid-template-columns: 1fr 320px;
     gap: 14px;
     min-height: 0;
+    height: 100%;
+    align-items: stretch;
 }
 
 .mapPane {
     min-height: 0;
+    height: 100%;
     display: grid;
     border: 1px solid rgba(27, 58, 82, .8);
     border-radius: 12px;
@@ -552,6 +554,9 @@ body::after {
 
 .infoPane {
     min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 
     border: 1px solid rgba(27, 58, 82, .8);
     border-radius: 12px;
@@ -809,7 +814,7 @@ body::after {
 
 .main {
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
 }
 
 .topbar {
@@ -1038,47 +1043,26 @@ body::after {
 /* ===== Sidebar navigation (attached to app frame) ===== */
 .sideNav {
     position: absolute;
-    left: 0;
-    top: 62px;
-    /* just below header line */
-    bottom: 0;
+    top: 18px;
+    bottom: 18px;
+    left: -280px;
+    /* hidden off screen */
     width: 280px;
-    border-right: 1px solid rgba(0, 200, 255, .18);
-    background: linear-gradient(180deg, rgba(11, 28, 42, .86), rgba(6, 17, 27, .92));
-    box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
-    transform: translateX(-100%);
-    transition: transform 220ms ease;
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-}
 
-.sideNav.open {
-    transform: translateX(0);
-}
-
-.sideHdr {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 14px 12px;
-    border-bottom: 1px solid rgba(27, 58, 82, .8);
-}
-
-.sideTitle {
-    font-weight: 900;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-}
-
-.sideClose {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
+    border-radius: 16px 12px 12px 16px;
+    /* more rounded free edge */
     border: 1px solid rgba(0, 200, 255, .22);
-    background: rgba(0, 200, 255, .08);
-    color: var(--text);
-    cursor: pointer;
+    background: rgba(0, 200, 255, .06);
+    backdrop-filter: blur(6px);
+
+    transition: transform 220ms ease;
+    transform: translateX(0);
+    z-index: 40;
+}
+
+/* When open */
+.sideNav.open {
+    transform: translateX(280px);
 }
 
 .sideBtns {
@@ -1136,8 +1120,7 @@ body::after {
 
 /* When sidebar is open, shift appBody content so it feels connected (optional) */
 .app.hasSidebar .appBody {
-    padding-left: 280px;
-    transition: padding-left 220ms ease;
+    padding-left: 0;
 }
 
 @media (max-width: 980px) {
@@ -1158,97 +1141,6 @@ body::after {
     }
 }
 
-/* ==========================================================
-   Sidebar drawer behavior (FINAL override)
-   - CLOSED: hidden (no dim)
-   - OPEN: slides out into the empty space LEFT of the terminal
-   - Dimmer only appears when OPEN
-   These rules intentionally override earlier sidebar styles.
-   ========================================================== */
-
-/* Allow the drawer to render outside the terminal frame */
-.app {
-    overflow: visible;
-}
-
-/* Drawer lives just OUTSIDE the terminal's left edge */
-.sideNav {
-    left: auto !important;
-    right: 100% !important;
-    top: 62px !important;
-    bottom: 0 !important;
-    width: 280px !important;
-
-    /* CLOSED = tucked behind edge + invisible */
-    transform: translateX(100%) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-
-    transition: transform 220ms ease, opacity 140ms ease !important;
-    z-index: 30 !important;
-}
-
-.sideNav.open {
-    transform: translateX(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
-
-/* Dimmer should ONLY appear when the menu is OPEN */
-.sideOverlay {
-    inset: 0 !important;
-    z-index: 25 !important;
-}
-
-/* Sidebar is outside, so never shift content */
-.app.hasSidebar .appBody {
-    padding-left: 0 !important;
-}
-
-/* Dock button stays attached to the drawer edge */
-.menuDock {
-    z-index: 35;
-}
-
-.menuDock.open {
-    transform: translateY(-50%) translateX(-280px);
-}
-
-/* Arrow direction:
-   - CLOSED: points RIGHT (indicates "open")
-   - OPEN: points LEFT  (indicates "close") */
-.menuArrow::before {
-    transform: rotate(-135deg);
-}
-
-.menuArrow.open::before {
-    transform: rotate(45deg);
-}
-
-/* On narrower layouts there may be no "empty space" to the left of the terminal.
-   In that case, fall back to an in-panel drawer so NAV is always reachable. */
-@media (max-width: 1180px) {
-    .sideNav {
-        right: auto;
-        left: 0;
-        box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
-        /* closed: off-canvas to the left */
-        transform: translateX(-100%);
-        opacity: 1;
-        pointer-events: none;
-    }
-
-    .sideNav.open {
-        transform: translateX(0);
-        pointer-events: auto;
-    }
-
-    /* Keep the dock button from flying off-screen on small widths */
-    .menuDock.open {
-        transform: translateY(-50%) translateX(0);
-    }
-}
-
 /* ===== Panel-docked menu arrow ===== */
 .app {
     position: relative;
@@ -1257,8 +1149,8 @@ body::after {
 
 .menuDock {
     position: absolute;
-    left: -14px;
-    /* sticks out of the panel edge */
+    left: -17px;
+    /* half outside (button is 34px wide) */
     top: 50%;
     transform: translateY(-50%);
     width: 34px;
@@ -1271,9 +1163,37 @@ body::after {
     z-index: 50;
 }
 
+.menuDock::after {
+    content: "";
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 22px;
+    border-radius: 2px;
+    background: rgba(0, 200, 255, 0.25);
+    box-shadow:
+        6px 0 0 rgba(0, 200, 255, 0.18),
+        12px 0 0 rgba(0, 200, 255, 0.12);
+}
+
 .menuDock:hover {
     border-color: rgba(0, 200, 255, 0.40);
 }
+
+.menuDock:hover::after {
+    background: rgba(0, 200, 255, 0.45);
+    box-shadow:
+        6px 0 0 rgba(0, 200, 255, 0.35),
+        12px 0 0 rgba(0, 200, 255, 0.25);
+}
+
+/* When sidebar is open, move the dock button left so it stays attached and clears nav buttons */
+.menuDock.open {
+    transform: translateY(-50%) translateX(-280px);
+}
+
 
 .menuArrow {
     width: 44px;
@@ -1306,33 +1226,13 @@ body::after {
     /* points RIGHT */
 }
 
-/* ==========================================================
-   FIX PACK: Dock button spacing, sidebar rounding/centering,
-   view stacking, and full-height Node Data (2026-02-21)
-   ========================================================== */
-
-/* Ensure app body/grid fills the available height */
-.appBody { height: 100%; align-items: stretch; }
-.mapPane, .infoPane { height: 100%; }
-
-/* Node Data: fill column height cleanly */
-.infoPane { display: flex; flex-direction: column; }
-
-/* Views: only the active view should render (prevents text overlap) */
-.mapPane .view { display: none; height: 100%; }
-.mapPane .view.active { display: block; }
-
-/* Sidebar: round the free (left) edge and center it vertically a bit */
-.sideNav {
-  top: 96px !important;
-  bottom: 96px !important;
-  border-radius: 18px 0 0 18px !important;
+/* Route views: only show the active view */
+.view {
+    display: none;
+    height: 100%;
 }
 
-/* Dock button: sit slightly more left when drawer is open, and stay above nav */
-.menuDock { z-index: 60; left: -18px; }
-.menuDock.open { transform: translateY(-50%) translateX(-320px) !important; }
-
-/* When sidebar is open, keep the close button/dock above content */
-.sideNav, .sideOverlay { z-index: 40 !important; }
-.menuDock { z-index: 60 !important; }
+.view.active {
+    display: block;
+    height: 100%;
+}

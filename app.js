@@ -7,7 +7,6 @@
     const CAMPAIGN_DATE = "21 FEB 2518";
     const STAR_SYSTEM = "UNKNOWN";
     const REQUIRED_PASSWORD = "FR-2521"; // placeholder (can be changed later)
-    const DEFAULT_USERNAME = "CMD_101ST_NOVA"; // login panel display
 
     // Music playlist (ogg). Paths are relative to site root.
     const PLAYLIST = [
@@ -42,16 +41,11 @@
     const appTitle = $("#appTitle");
     const appSub = $("#appSub");
 
-    // Node data panel
-    const nodeSelection = $("#nodeSelection");
-    const nodeHint = $("#nodeHint");
-
     // Telemetry graphs
     const netVal = $("#netVal");
     const cpuVal = $("#cpuVal");
-    // Telemetry canvases
-    const netGraph = $("#netCanvas");
-    const cpuGraph = $("#cpuCanvas");
+    const netGraph = $("#netGraph");
+    const cpuGraph = $("#cpuGraph");
 
     // Music HUD
     const musicTrack = $("#musicTrack");
@@ -275,7 +269,17 @@
     setInterval(tickTime, 1000);
 
     // ---------- NAV / ROUTES ----------
-    const ROUTE_TITLES = {
+    const ROUTE_NODE = {
+  map: { selection: "System Map", hint: "Click a planet to view regions & contracts." },
+  contracts: { selection: "Contract Board", hint: "Select a region to see contracts available there." },
+  factions: { selection: "Faction Registry", hint: "Reputation affects contract access and support." },
+  ship: { selection: "Ship Status", hint: "Review hull, modules, fleet assets, and cargo." },
+  logs: { selection: "Operation Logs", hint: "Review recent events, transmissions, and system updates." },
+  settings: { selection: "Settings", hint: "Adjust audio, visuals, and accessibility." },
+  lock: { selection: "Lock Terminal", hint: "Return to login screen." },
+};
+
+const ROUTE_TITLES = {
         map: "BRIDGE / SYSTEM MAP",
         contracts: "BRIDGE / CONTRACTS",
         factions: "BRIDGE / FACTIONS",
@@ -284,27 +288,6 @@
         settings: "BRIDGE / SETTINGS",
         lock: "LOCK TERMINAL",
     };
-
-    const ROUTE_HINTS = {
-        map: "Click a planet to view regions & contracts.",
-        contracts: "Select a region, then review available contracts for that AO.",
-        factions: "Review faction standings. Some contracts modify reputation.",
-        ship: "Check hull status, modules, cargo, and fleet readiness.",
-        logs: "Review campaign events, transmissions, and mission outcomes.",
-        settings: "Adjust audio/visual settings for this terminal.",
-        lock: "Return to login / power state."
-    };
-
-    const ROUTE_SELECTION = {
-        map: "System Map",
-        contracts: "Contracts",
-        factions: "Factions",
-        ship: "Ship Status",
-        logs: "Logs",
-        settings: "Settings",
-        lock: "—"
-    };
-
 
     function setRoute(route) {
         // views
@@ -316,8 +299,6 @@
             b.classList.toggle("active", b.dataset.route === route);
         }
         setText(appTitle, ROUTE_TITLES[route] ?? "BRIDGE / SYSTEM");
-        setText(nodeSelection, ROUTE_SELECTION[route] ?? "None");
-        setText(nodeHint, ROUTE_HINTS[route] ?? "");
     }
 
     function openSidebar() {
@@ -375,8 +356,6 @@
     }
 
     function lockTerminal() {
-        // hard reset sidebar/overlay/button state
-        closeSidebar();
         powered = false;
         authed = false;
 
@@ -438,7 +417,7 @@
         loginBtn.disabled = true;
 
         // fake credential entry (swap for real inputs later)
-        setText(uiUser, DEFAULT_USERNAME);
+        setText(uiUser, "GUEST");
         setText(uiPass, "••••••••");
 
         await typeLine("AUTH REQUEST: INITIATED", { delay: 10 });
@@ -463,14 +442,10 @@
 
         // Transition
         showApp();
-        // ensure drawer + dimmer are in the expected state on entry
-        closeSidebar();
         setText(appSub, "FM-FR-2521 • RELAY STATUS: ACTIVE");
         setRoute("map");
     });
 
     // init
     lockTerminal();
-    // Extra safety: ensure no stray "open" classes remain after first paint.
-    closeSidebar();
 })();
