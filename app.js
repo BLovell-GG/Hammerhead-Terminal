@@ -86,11 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 // ===== MUSIC PLAYLIST =====
 const playlist = [
-  { title: "Insignificantia", file: "assets/music/halo_wars_insignificantia.ogg" },
-  { title: "Spirit of Fire", file: "assets/music/halo_wars_spirit_of_fire.ogg" },
-  { title: "Atonement", file: "assets/music/halo4_atonement.ogg" },
-  { title: "Defence For Darkness", file: "assets/music/halo3_odst_darkness.ogg" },
-  { title: "Vanirs Legacy", file: "assets/music/ixion_vanirs_legacy.ogg" },
+    { title: "Insignificantia", file: "assets/music/halo_wars_insignificantia.ogg" },
+    { title: "Spirit of Fire", file: "assets/music/halo_wars_spirit_of_fire.ogg" },
+    { title: "Atonement", file: "assets/music/halo4_atonement.ogg" },
+    { title: "Defence For Darkness", file: "assets/music/halo3_odst_darkness.ogg" },
+    { title: "Vanirs Legacy", file: "assets/music/ixion_vanirs_legacy.ogg" },
 ];
 
 let currentTrack = 0;
@@ -106,55 +106,55 @@ const nextTrackBtn = document.getElementById("nextTrack");
 const prevTrackBtn = document.getElementById("prevTrack");
 
 function loadTrack(index) {
-  currentTrack = index;
-  music.src = playlist[currentTrack].file;
-  musicTrackLabel.textContent = playlist[currentTrack].title;
-  music.load();
+    currentTrack = index;
+    music.src = playlist[currentTrack].file;
+    musicTrackLabel.textContent = playlist[currentTrack].title;
+    music.load();
 }
 
 async function playMusic() {
-  try {
-    music.volume = 0;
-    await music.play();
-    musicToggle.textContent = "PAUSE";
-    document.getElementById("musicHud").classList.add("playing");
+    try {
+        music.volume = 0;
+        await music.play();
+        musicToggle.textContent = "PAUSE";
+        document.getElementById("musicHud").classList.add("playing");
 
-    const targetVolume = Number(musicVol.value) / 100;
-    const fadeDuration = 2000;
-    const steps = 40;
-    const stepTime = fadeDuration / steps;
+        const targetVolume = Number(musicVol.value) / 100;
+        const fadeDuration = 2000;
+        const steps = 40;
+        const stepTime = fadeDuration / steps;
 
-    for (let i = 0; i <= steps; i++) {
-      music.volume = (targetVolume * i) / steps;
-      await new Promise(r => setTimeout(r, stepTime));
-    }
+        for (let i = 0; i <= steps; i++) {
+            music.volume = (targetVolume * i) / steps;
+            await new Promise(r => setTimeout(r, stepTime));
+        }
 
-  } catch (e) {}
+    } catch (e) { }
 }
 
 function pauseMusic() {
-  music.pause();
-  musicToggle.textContent = "PLAY";
-  document.getElementById("musicHud").classList.remove("playing");
+    music.pause();
+    musicToggle.textContent = "PLAY";
+    document.getElementById("musicHud").classList.remove("playing");
 }
 
 musicToggle.addEventListener("click", () => {
-  if (music.paused) playMusic();
-  else pauseMusic();
+    if (music.paused) playMusic();
+    else pauseMusic();
 });
 
 nextTrackBtn.addEventListener("click", () => {
-  loadTrack((currentTrack + 1) % playlist.length);
-  playMusic();
+    loadTrack((currentTrack + 1) % playlist.length);
+    playMusic();
 });
 
 prevTrackBtn.addEventListener("click", () => {
-  loadTrack((currentTrack - 1 + playlist.length) % playlist.length);
-  playMusic();
+    loadTrack((currentTrack - 1 + playlist.length) % playlist.length);
+    playMusic();
 });
 
 musicVol.addEventListener("input", () => {
-  music.volume = Number(musicVol.value) / 100;
+    music.volume = Number(musicVol.value) / 100;
 });
 
 // Initialize track label without autoplay
