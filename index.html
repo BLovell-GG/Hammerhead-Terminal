@@ -2,150 +2,229 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Hammerhead Terminal</title>
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hammerhead Terminal</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-    <img class="unsc-emblem" src="assets/unsc-mark.png" alt="" aria-hidden="true" />
-    <main class="wrap">
+  <!-- Static UNSC emblem (does not move with background) -->
+  <img class="unsc-emblem" src="assets/unsc-mark.png" alt="" aria-hidden="true" />
 
-        <!-- LOGIN PANEL -->
-        <section class="panel" id="loginPanel" aria-label="Terminal Login">
+  <main class="wrap">
 
-            <header class="hdr">
-                <div class="kicker">FM-FR-2521</div>
-                <div class="stamp">
-                    <div class="stampRow">
-                        <span class="dim">CLEARANCE</span> / <span class="ok">GUEST</span>
-                    </div>
-                    <div class="stampRow">
-                        <span class="dim">NODE</span> / RELAY-01
-                    </div>
-                </div>
-            </header>
+    <!-- LOGIN PANEL -->
+    <section class="panel" id="loginPanel" aria-label="Terminal Login">
 
-            <h1 class="title">UNSC COMMAND TERMINAL</h1>
+      <header class="hdr">
+        <div class="kicker">FM-FR-2521</div>
+        <div class="stamp">
+          <div class="stampRow">
+            <span class="dim">CLEARANCE</span> / <span class="ok">GUEST</span>
+          </div>
+          <div class="stampRow">
+            <span class="dim">NODE</span> / RELAY-01
+          </div>
+        </div>
+      </header>
 
-            <div class="status off" id="terminalStatus">
-                <span class="dot"></span>
-                STATUS: OFFLINE
-            </div>
+      <h1 class="title">UNSC COMMAND TERMINAL</h1>
 
+      <div class="status off" id="terminalStatus">
+        <span class="dot"></span>
+        STATUS: OFFLINE
+      </div>
 
-            <div class="powerRow">
-                <button class="btn" id="powerBtn" type="button">POWER ON</button>
-                <div class="powerNote dim" id="powerNote">Terminal power is offline. Activation required.</div>
-            </div>
+      <div class="powerRow">
+        <button class="btn" id="powerBtn" type="button">POWER ON</button>
+        <div class="powerNote dim" id="powerNote">Terminal power is offline. Activation required.</div>
+      </div>
 
-            <div class="divider"></div>
+      <div class="divider"></div>
 
-            <!-- AUTH MODULE -->
-            <section class="auth hidden" id="authModule">
+      <!-- AUTH MODULE -->
+      <section class="auth hidden" id="authModule">
 
-                <div class="authTop">
-                    <div class="authTitle">ACCESS CONTROL</div>
-                    <div class="authTag">AUTH // RELAY NODE</div>
-                </div>
-
-                <div class="authBody">
-
-                    <!-- LEFT SIDE: LOGIN FIELDS -->
-                    <div class="fields">
-
-                        <div class="field">
-                            <div class="label">USERNAME</div>
-                            <div class="value" id="uiUser">—</div>
-                        </div>
-
-                        <div class="field">
-                            <div class="label">PASSWORD</div>
-                            <div class="value" id="uiPass">—</div>
-                        </div>
-
-                        <div class="actions authActions">
-                            <button class="btn" id="loginBtn" type="button">LOGIN</button>
-                        </div>
-
-                        <div class="note">
-                            NOTE: UNAUTHORIZED ACCESS WILL BE LOGGED.
-                        </div>
-
-                    </div>
-
-                    <!-- RIGHT SIDE: AUTH LOG -->
-                    <div class="termWrap">
-                        <div class="termTop">
-                            <span>AUTH LOG</span>
-                            <span class="dim">LIVE</span>
-                        </div>
-
-                        <div class="terminal" id="terminal">
-                            <div class="line dim">Awaiting user interaction…</div>
-                        </div>
-                    </div>
-
-                </div> <!-- END authBody -->
-
-            </section> <!-- END auth -->
-
-        </section> <!-- END loginPanel -->
-
-        <!-- APP SHELL (hidden until login completes) -->
-        <section class="app hidden" id="appShell" aria-label="System Map">
-            <div class="appTop">
-                <div class="appTitle">BRIDGE / SYSTEM MAP</div>
-                <div class="appSub">FM-FR-2521 • RELAY STATUS: ACTIVE</div>
-                <div class="appNav">
-                    <button class="navBtn active" data-route="map">SYSTEM</button>
-                    <button class="navBtn" data-route="contracts">CONTRACTS</button>
-                    <button class="navBtn" data-route="factions">FACTIONS</button>
-                    <button class="navBtn" data-route="ship">SHIP</button>
-                </div>
-            </div>
-
-            <div class="appBody">
-                <div class="mapPane">
-                    <div class="mapPlaceholder">
-                        <div class="mapBig">SYSTEM MAP</div>
-                        <div class="mapSmall">UI next: planets + orbits + region overlay.</div>
-                    </div>
-                </div>
-
-                <aside class="infoPane">
-                    <div class="infoHeader">NODE DATA</div>
-                    <div class="infoBlock">
-                        <div class="infoKey">Selection</div>
-                        <div class="infoVal">None</div>
-                    </div>
-                    <div class="infoBlock">
-                        <div class="infoKey">Hint</div>
-                        <div class="infoVal">Click a planet to view regions & contracts.</div>
-                    </div>
-                </aside>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- MUSIC HUD -->
-    <div class="musicHud" id="musicHud" aria-label="Music Player">
-        <div class="musicInfo">
-            <div class="musicLabel">BATTLE NET AUDIO</div>
-            <div class="musicTrack" id="musicTrack">NO SIGNAL</div>
+        <div class="authTop">
+          <div class="authTitle">ACCESS CONTROL</div>
+          <div class="authTag">AUTH // RELAY NODE</div>
         </div>
 
-        <div class="musicControls">
-            <button class="mBtn" id="prevTrack" type="button">◀</button>
-            <button class="mBtn" id="musicToggle" type="button">PLAY</button>
-            <button class="mBtn" id="nextTrack" type="button">▶</button>
-            <input class="mVol" id="musicVol" type="range" min="0" max="100" value="35" />
+        <div class="authBody">
+
+          <!-- LEFT SIDE: LOGIN FIELDS -->
+          <div class="fields">
+
+            <div class="field">
+              <div class="label">USERNAME</div>
+              <div class="value" id="uiUser">—</div>
+            </div>
+
+            <div class="field">
+              <div class="label">PASSWORD</div>
+              <div class="value" id="uiPass">—</div>
+            </div>
+
+            <div class="actions authActions">
+              <button class="btn" id="loginBtn" type="button">LOGIN</button>
+            </div>
+
+            <div class="note">
+              NOTE: UNAUTHORIZED ACCESS WILL BE LOGGED.
+            </div>
+
+          </div>
+
+          <!-- RIGHT SIDE: AUTH LOG -->
+          <div class="termWrap">
+            <div class="termTop">
+              <span>AUTH LOG</span>
+              <span class="dim">LIVE</span>
+            </div>
+
+            <div class="terminal" id="terminal">
+              <div class="line dim">Awaiting user interaction…</div>
+            </div>
+          </div>
+
         </div>
+
+      </section>
+
+    </section>
+
+    <!-- APP SHELL (hidden until login completes) -->
+    <section class="app hidden" id="appShell" aria-label="Bridge Console">
+
+      <div class="appTop">
+        <div class="appTitle">BRIDGE / SYSTEM MAP</div>
+
+        <!-- Live data streams (visual fluctuation) -->
+        <div class="telemetry" aria-label="Relay Telemetry">
+          <div class="teleCard">
+            <div class="teleHdr">
+              <span>NETWORK TRAFFIC</span>
+              <span class="dim" id="netVal">0.00</span>
+            </div>
+            <canvas class="teleGraph" id="netGraph" width="140" height="42"></canvas>
+          </div>
+          <div class="teleCard">
+            <div class="teleHdr">
+              <span>CPU USAGE</span>
+              <span class="dim" id="cpuVal">0%</span>
+            </div>
+            <canvas class="teleGraph" id="cpuGraph" width="140" height="42"></canvas>
+          </div>
+        </div>
+
+        <button class="menuBtn" id="menuBtn" type="button" aria-label="Open navigation">MENU</button>
+      </div>
+
+      <!-- Slide-out sidebar navigation -->
+      <aside class="sideNav hidden" id="sideNav" aria-label="Navigation">
+        <div class="sideHdr">
+          <div class="sideTitle">NAVIGATION</div>
+          <button class="sideClose" id="sideClose" type="button" aria-label="Close navigation">✕</button>
+        </div>
+        <div class="sideBtns">
+          <button class="sideBtn active" data-route="map">SYSTEM</button>
+          <button class="sideBtn" data-route="contracts">CONTRACTS</button>
+          <button class="sideBtn" data-route="factions">FACTIONS</button>
+          <button class="sideBtn" data-route="ship">SHIP</button>
+          <div class="sideSep"></div>
+          <button class="sideBtn" data-route="logs">LOGS</button>
+          <button class="sideBtn" data-route="settings">SETTINGS</button>
+          <button class="sideBtn" data-route="lock">LOCK TERMINAL</button>
+        </div>
+      </aside>
+
+      <div class="appBody">
+        <div class="mapPane">
+          <!-- Views (route targets) -->
+          <section class="view active" data-view="map">
+            <div class="mapPlaceholder">
+              <div class="mapBig">SYSTEM MAP</div>
+              <div class="mapSmall">UI next: planets + orbits + region overlay.</div>
+            </div>
+          </section>
+
+          <section class="view" data-view="contracts">
+            <div class="mapPlaceholder">
+              <div class="mapBig">CONTRACT BOARD</div>
+              <div class="mapSmall">Placeholder: contract list + filters + issuer factions.</div>
+            </div>
+          </section>
+
+          <section class="view" data-view="factions">
+            <div class="mapPlaceholder">
+              <div class="mapBig">FACTIONS</div>
+              <div class="mapSmall">Placeholder: faction list + reputation bars.</div>
+            </div>
+          </section>
+
+          <section class="view" data-view="ship">
+            <div class="mapPlaceholder">
+              <div class="mapBig">SHIP STATUS</div>
+              <div class="mapSmall">Placeholder: hull integrity + modules + crew + cargo.</div>
+            </div>
+          </section>
+
+          <section class="view" data-view="logs">
+            <div class="mapPlaceholder">
+              <div class="mapBig">OPERATION LOGS</div>
+              <div class="mapSmall">Placeholder: chronological system events.</div>
+            </div>
+          </section>
+
+          <section class="view" data-view="settings">
+            <div class="mapPlaceholder">
+              <div class="mapBig">SETTINGS</div>
+              <div class="mapSmall">Placeholder: audio + visual + accessibility toggles.</div>
+            </div>
+          </section>
+        </div>
+
+        <aside class="infoPane">
+          <div class="infoHeader">NODE DATA</div>
+          <div class="infoBlock">
+            <div class="infoKey">Selection</div>
+            <div class="infoVal" id="nodeSelection">None</div>
+          </div>
+          <div class="infoBlock">
+            <div class="infoKey">Hint</div>
+            <div class="infoVal" id="nodeHint">Click a planet to view regions & contracts.</div>
+          </div>
+        </aside>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- MUSIC HUD -->
+  <div class="musicHud" id="musicHud" aria-label="Music Player">
+    <div class="musicInfo">
+      <div class="musicLabel">BATTLE NET AUDIO</div>
+      <div class="musicTrack" id="musicTrack">NO SIGNAL</div>
     </div>
 
-    <script src="app.js"></script>
+    <div class="musicControls">
+      <button class="mBtn" id="prevTrack" type="button">◀</button>
+      <button class="mBtn" id="musicToggle" type="button">PLAY</button>
+      <button class="mBtn" id="nextTrack" type="button">▶</button>
+      <input class="mVol" id="musicVol" type="range" min="0" max="100" value="35" />
+    </div>
+  </div>
+
+  <!-- Time / theatre HUD -->
+  <div class="timeHud" id="timeHud" aria-label="Shipboard Time">
+    <div class="timeRow"><span class="dim">DATE</span>: <span id="campDate">21 FEB 2518</span></div>
+    <div class="timeRow"><span class="dim">SHIPBOARD TIME</span>: <span id="shipTime">--:--:--</span></div>
+    <div class="timeRow"><span class="dim">STAR SYSTEM</span>: <span id="starSystem">UNKNOWN</span></div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 
 </html>
