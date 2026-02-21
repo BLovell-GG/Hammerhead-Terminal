@@ -47,14 +47,15 @@ body {
     color: var(--text);
 
     background:
-        /* soft top spill (elliptical + off-center) */
+        /* soft blue spill (off-center, elliptical) */
         radial-gradient(1400px 900px at 42% 18%,
-            color-mix(in srgb, var(--accent) 3%, transparent) transparent 62%),
+            rgba(0, 200, 255, 0.08) 0%,
+            rgba(0, 200, 255, 0.00) 62%),
 
-        /* secondary faint fill to break the ring */
+        /* faint neutral fill to break “circle edge” */
         radial-gradient(1800px 1200px at 62% 30%,
             rgba(255, 255, 255, 0.035) 0%,
-            transparent 58%),
+            rgba(255, 255, 255, 0.00) 58%),
 
         /* base */
         linear-gradient(180deg, #03070b 0%, var(--bg) 55%, #02060a 100%);
