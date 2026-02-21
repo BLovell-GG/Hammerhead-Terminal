@@ -7,6 +7,7 @@
     const CAMPAIGN_DATE = "21 FEB 2518";
     const STAR_SYSTEM = "UNKNOWN";
     const REQUIRED_PASSWORD = "FR-2521"; // placeholder (can be changed later)
+    const DEFAULT_USERNAME = "CMD_101ST_NOVA";
 
     // Music playlist (ogg). Paths are relative to site root.
     const PLAYLIST = [
@@ -344,10 +345,11 @@
         appShell?.classList.remove("hidden");
         loginScreen?.classList.add("hidden");
     }
-
     function lockTerminal() {
         powered = false;
         authed = false;
+
+        closeSidebar();
 
         // reset UI
         authModule?.classList.add("hidden");
@@ -407,7 +409,7 @@
         loginBtn.disabled = true;
 
         // fake credential entry (swap for real inputs later)
-        setText(uiUser, "GUEST");
+        setText(uiUser, DEFAULT_USERNAME);
         setText(uiPass, "••••••••");
 
         await typeLine("AUTH REQUEST: INITIATED", { delay: 10 });
@@ -432,6 +434,7 @@
 
         // Transition
         showApp();
+        closeSidebar();
         setText(appSub, "FM-FR-2521 • RELAY STATUS: ACTIVE");
         setRoute("map");
     });

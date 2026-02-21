@@ -1037,17 +1037,13 @@ body::after {
     box-shadow: 0 0 0 1px rgba(0, 200, 255, .18);
 }
 
-/* ===== Sidebar navigation (attached to app frame) ===== */
+/* ===== Sidebar navigation (slides OUTWARD to the LEFT) ===== */
 .sideNav {
     position: absolute;
-
-    /* Anchor the sidebar OUTSIDE the app frame */
     right: 100%;
-    /* sidebar sits to the left of the app */
     left: auto;
 
     top: 62px;
-    /* keep below app header line */
     bottom: 0;
     width: 280px;
 
@@ -1055,9 +1051,12 @@ body::after {
     background: linear-gradient(180deg, rgba(11, 28, 42, .86), rgba(6, 17, 27, .92));
     box-shadow: -14px 0 40px rgba(0, 0, 0, .45);
 
-    /* CLOSED: tucked behind the app edge (hidden) */
+    /* CLOSED: hidden + tucked behind the edge */
     transform: translateX(100%);
-    transition: transform 220ms ease;
+    opacity: 0;
+    pointer-events: none;
+
+    transition: transform 220ms ease, opacity 140ms ease;
 
     z-index: 20;
     display: flex;
@@ -1065,7 +1064,10 @@ body::after {
 }
 
 .sideNav.open {
+    /* OPEN: slides outward to the left (into view) */
     transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .sideHdr {
@@ -1189,6 +1191,12 @@ body::after {
     cursor: pointer;
     z-index: 50;
 }
+
+/* When sidebar is open, move the dock button left so it stays attached */
+.menuDock.open {
+    transform: translateY(-50%) translateX(-280px);
+}
+
 
 .menuDock:hover {
     border-color: rgba(0, 200, 255, 0.40);
