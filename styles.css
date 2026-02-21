@@ -103,7 +103,7 @@ body::after {
     top: 18px;
     left: 18px;
 
-    height: clamp(64px, 6vw, 140px);
+    height: clamp(44px, 4.5vw, 96px);
     width: auto;
 
     opacity: 0.14;
@@ -115,7 +115,8 @@ body::after {
     min-height: 100svh;
     display: grid;
     place-items: center;
-    padding: 36px;
+    padding: clamp(12px, 3vw, 36px);
+    overflow: hidden;
 }
 
 /* ===== shared helpers ===== */
@@ -408,13 +409,18 @@ body::after {
 
 /* ===== APP SHELL (placeholder) ===== */
 .app {
-    width: min(1200px, 100%);
-    height: min(720px, 100%);
+    position: relative;
+    width: min(1200px, calc(100vw - 2 * clamp(12px, 3vw, 36px)));
+    max-height: calc(100svh - 2 * clamp(12px, 3vw, 36px));
     border: 1px solid rgba(0, 200, 255, .18);
     background: linear-gradient(180deg, rgba(11, 28, 42, .92), rgba(6, 17, 27, .92));
     box-shadow: 0 0 0 1px rgba(0, 200, 255, .08), 0 24px 90px rgba(0, 0, 0, .60);
     border-radius: 12px;
     padding: 18px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 12px;
+    overflow: hidden;
 }
 
 .app.hidden {
@@ -427,8 +433,7 @@ body::after {
     justify-content: space-between;
     border-bottom: 1px solid rgba(27, 58, 82, .8);
     padding-bottom: 12px;
-    margin-bottom: 12px;
-}
+    }
 
 .appTitle {
     letter-spacing: .18em;
@@ -447,10 +452,12 @@ body::after {
     display: grid;
     grid-template-columns: 1fr 360px;
     gap: 12px;
-    height: calc(100% - 56px);
+    min-height: 0;
 }
 
 .mapPane {
+    min-height: 0;
+
     border: 1px solid rgba(27, 58, 82, .8);
     border-radius: 12px;
     background: radial-gradient(900px 500px at 50% 30%, rgba(0, 200, 255, .10), rgba(0, 0, 0, .10));
@@ -483,6 +490,8 @@ body::after {
 }
 
 .infoPane {
+    min-height: 0;
+
     border: 1px solid rgba(27, 58, 82, .8);
     border-radius: 12px;
     background: rgba(0, 0, 0, .16);
@@ -908,4 +917,152 @@ body::after {
 .navBtn.active {
     border-color: rgba(0, 200, 255, .55);
     background: rgba(0, 200, 255, .16);
+}
+
+/* ===== Telemetry mini-graphs (top bar) ===== */
+.telemetry{
+    display:flex;
+    gap:10px;
+    align-items:flex-end;
+    margin-left:auto;
+    margin-right:14px;
+}
+.teleCard{
+    width:170px;
+    border:1px solid rgba(0,200,255,.18);
+    border-radius:10px;
+    background:rgba(6,17,27,.35);
+    padding:8px 10px 10px;
+}
+.teleHdr{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:10px;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--text);
+    margin-bottom:6px;
+}
+.teleGraph{
+    width:100%;
+    height:42px;
+    display:block;
+    border-radius:6px;
+    background:rgba(0,0,0,.18);
+}
+
+/* ===== MENU button (opens sidebar) ===== */
+.menuBtn{
+    border:1px solid rgba(0,200,255,.28);
+    background:rgba(0,200,255,.10);
+    color:var(--text);
+    padding:8px 14px;
+    border-radius:999px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    font-weight:900;
+    cursor:pointer;
+    font-size:11px;
+}
+.menuBtn:hover{
+    box-shadow:0 0 0 1px rgba(0,200,255,.18);
+}
+
+/* ===== Sidebar navigation (attached to app frame) ===== */
+.sideNav{
+    position:absolute;
+    left:0;
+    top:62px; /* just below header line */
+    bottom:0;
+    width:280px;
+    border-right:1px solid rgba(0,200,255,.18);
+    background:linear-gradient(180deg, rgba(11,28,42,.86), rgba(6,17,27,.92));
+    box-shadow: 14px 0 40px rgba(0,0,0,.45);
+    transform: translateX(-100%);
+    transition: transform 220ms ease;
+    z-index:20;
+    display:flex;
+    flex-direction:column;
+}
+.sideNav.open{
+    transform: translateX(0);
+}
+.sideHdr{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 14px 12px;
+    border-bottom:1px solid rgba(27,58,82,.8);
+}
+.sideTitle{
+    font-weight:900;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+}
+.sideClose{
+    width:34px;height:34px;
+    border-radius:10px;
+    border:1px solid rgba(0,200,255,.22);
+    background:rgba(0,200,255,.08);
+    color:var(--text);
+    cursor:pointer;
+}
+.sideBtns{
+    padding:14px;
+    display:grid;
+    gap:10px;
+    overflow:auto;
+}
+.sideBtn{
+    width:100%;
+    text-align:left;
+    border:1px solid rgba(0,200,255,.18);
+    background:rgba(0,0,0,.18);
+    color:var(--text);
+    padding:12px 12px;
+    border-radius:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    font-weight:900;
+    cursor:pointer;
+    font-size:11px;
+}
+.sideBtn:hover{ box-shadow:0 0 0 1px rgba(0,200,255,.14); }
+.sideBtn.active{
+    border-color: rgba(0,200,255,.45);
+    background: rgba(0,200,255,.10);
+}
+.sideSep{
+    height:1px;
+    background: rgba(27,58,82,.8);
+    margin:6px 0;
+}
+
+/* darken content behind sidebar when open */
+.sideOverlay{
+    position:absolute;
+    inset:62px 0 0 0;
+    background:rgba(0,0,0,.35);
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 180ms ease;
+    z-index:15;
+}
+.sideOverlay.open{
+    opacity:1;
+    pointer-events:auto;
+}
+
+/* When sidebar is open, shift appBody content so it feels connected (optional) */
+.app.hasSidebar .appBody{
+    padding-left: 280px;
+    transition: padding-left 220ms ease;
+}
+@media (max-width: 980px){
+    .telemetry{ display:none; }
+    .appBody{ grid-template-columns: 1fr; }
+    .infoPane{ display:none; }
+    .app.hasSidebar .appBody{ padding-left: 0; }
 }
