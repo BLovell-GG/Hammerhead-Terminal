@@ -445,8 +445,6 @@
         // Start music only after a user gesture (helps autoplay policies)
         if (PLAYLIST.length) {
             if (!music.src) loadTrack(0);
-            // do not force play; user can hit play — but fade-in on power on feels good
-            fadeInMusic(1100).catch(() => { });
         }
 
         await runPowerBoot();
