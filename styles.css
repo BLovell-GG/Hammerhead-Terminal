@@ -604,9 +604,14 @@ body::after {
     right: 18px;
     z-index: 50;
 
+    /* compact */
+    width: min(520px, calc(100vw - 36px));
+    max-width: 520px;
+
     display: flex;
-    align-items: center;
-    gap: 14px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
 
     padding: 12px 14px;
     border-radius: 12px;
@@ -617,7 +622,7 @@ body::after {
 }
 
 .musicInfo {
-    min-width: 220px;
+    min-width: 0;
 }
 
 .musicLabel {
@@ -629,21 +634,17 @@ body::after {
 }
 
 .musicTrack {
-    margin-top: 4px;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: .10em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    overflow: visible;
+    max-width: 100%;
+    overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 260px;
+    white-space: nowrap;
 }
 
 .musicControls {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .mBtn {
@@ -667,6 +668,7 @@ body::after {
 
 .mVol {
     width: 120px;
+    margin-left: auto;
 }
 
 .musicHud.playing {
@@ -1039,7 +1041,8 @@ body::after {
     position: absolute;
     right: 100%;
     left: auto;
-    top: 62px; /* below header */
+    top: 62px;
+    /* below header */
     bottom: 0;
     width: 280px;
 
@@ -1143,7 +1146,8 @@ body::after {
 
 /* When sidebar is open, shift appBody content so it feels connected (optional) */
 .app.hasSidebar .appBody {
-    padding-left: 0; /* was 280px; sidebar is overlay */
+    padding-left: 0;
+    /* was 280px; sidebar is overlay */
     transition: padding-left 220ms ease;
 }
 
@@ -1225,157 +1229,187 @@ body::after {
 }
 
 /* ===== Views: show only active route ===== */
-.view{display:none;height:100%;}
-.view.active{display:block;height:100%;}
+.view {
+    display: none;
+    height: 100%;
+}
+
+.view.active {
+    display: block;
+    height: 100%;
+}
 
 /* ===== Menu dock (button half outside panel edge) ===== */
-.menuDock{
-  position:absolute;
-  left:-18px;
-  top:50%;
-  transform:translateY(-50%);
-  width:36px;
-  height:56px;
-  border-radius:14px;
-  border:1px solid var(--line);
-  background:rgba(6,17,27,.72);
-  box-shadow:0 0 0 1px rgba(0,200,255,.06);
-  cursor:pointer;
-  z-index:60;
-  display:grid;
-  place-items:center;
-  padding:0;
+.menuDock {
+    position: absolute;
+    left: -18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 56px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: rgba(6, 17, 27, .72);
+    box-shadow: 0 0 0 1px rgba(0, 200, 255, .06);
+    cursor: pointer;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    padding: 0;
 }
-.menuDock:hover{border-color:rgba(0,200,255,.40);}
-.menuDock .menuArrow{
-  width:44px;height:44px;border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(6,17,27,.55);
-  position:relative;
-  display:block;
+
+.menuDock:hover {
+    border-color: rgba(0, 200, 255, .40);
 }
-.menuDock .menuArrow::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  margin:auto;
-  width:10px;height:10px;
-  border-right:2px solid rgba(70,227,255,.95);
-  border-bottom:2px solid rgba(70,227,255,.95);
-  transform:rotate(135deg);
+
+.menuDock .menuArrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(6, 17, 27, .55);
+    position: relative;
+    display: block;
 }
+
+.menuDock .menuArrow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid rgba(70, 227, 255, .95);
+    border-bottom: 2px solid rgba(70, 227, 255, .95);
+    transform: rotate(135deg);
+}
+
 .menuDock.open {
     transform: translateY(-50%) translateX(-280px);
 }
-.menuDock.open .menuArrow::before{transform:rotate(-45deg);}
+
+.menuDock.open .menuArrow::before {
+    transform: rotate(-45deg);
+}
 
 /* Optional tiny grab-handle dots (enabled when .menuDock has .grab) */
-.menuDock.grab::after{
-  content:"";
-  position:absolute;
-  left:6px;
-  width:3px;height:3px;border-radius:99px;
-  background:rgba(0,200,255,.55);
-  top:50%;
-  transform:translateY(-50%);
-  box-shadow:0 -8px 0 rgba(0,200,255,.45), 0 8px 0 rgba(0,200,255,.45);
-  opacity:.9;
+.menuDock.grab::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    width: 3px;
+    height: 3px;
+    border-radius: 99px;
+    background: rgba(0, 200, 255, .55);
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 -8px 0 rgba(0, 200, 255, .45), 0 8px 0 rgba(0, 200, 255, .45);
+    opacity: .9;
 }
 
 /* ===== Music HUD progress ===== */
-.mProgWrap{
-    display:flex;
-    align-items:center;
-    gap:10px;
+.mProgWrap {
+    flex: 1 1 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
-.mTime{
+
+.mTime {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: 12px;
     color: var(--muted);
     min-width: 44px;
-    text-align:center;
+    text-align: center;
 }
-.mProg{
-    width: 180px;
-    height: 6px;
-    background: rgba(255,255,255,0.10);
-    border-radius: 999px;
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
+
+.mProg {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 140px;
 }
-.mProg::-webkit-slider-thumb{
+
+.mProg::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 12px;
     height: 12px;
     border-radius: 999px;
     background: var(--accent);
-    border: 1px solid rgba(0,0,0,0.25);
+    border: 1px solid rgba(0, 0, 0, 0.25);
 }
-.mProg::-moz-range-thumb{
+
+.mProg::-moz-range-thumb {
     width: 12px;
     height: 12px;
     border-radius: 999px;
     background: var(--accent);
-    border: 1px solid rgba(0,0,0,0.25);
+    border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 
 /* ===== FIX: menu dock + sidebar visibility (single handle, no duplicate button) ===== */
-.app{ overflow: visible; }
+.app {
+    overflow: visible;
+}
 
 /* Ensure sidebar can render outside the panel */
-.sideNav{ z-index: 55; }
-.sideOverlay{ z-index: 54; }
+.sideNav {
+    z-index: 55;
+}
+
+.sideOverlay {
+    z-index: 54;
+}
 
 /* Force a single, clean dock button (prevents duplicate circular handle styles) */
-.menuDock{
-  display:block;
-  padding:0;
-  /* keep it glued to the panel edge */
-  left:-18px;
-  top:50%;
-  transform:translateY(-50%);
-  width:36px;
-  height:56px;
-  border-radius:14px;
-  z-index:60;
+.menuDock {
+    display: block;
+    padding: 0;
+    /* keep it glued to the panel edge */
+    left: -18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 56px;
+    border-radius: 14px;
+    z-index: 60;
 }
-.menuDock.open{
-  /* do NOT translate sideways when open */
-  transform:translateY(-50%);
+
+.menuDock.open {
+    /* do NOT translate sideways when open */
+    transform: translateY(-50%);
 }
 
 /* Arrow fills the dock — no extra circle */
-.menuDock .menuArrow{
-  width:100%;
-  height:100%;
-  border:none;
-  border-radius:0;
-  background:transparent;
-  display:block;
-  position:relative;
-  pointer-events:none;
+.menuDock .menuArrow {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    display: block;
+    position: relative;
+    pointer-events: none;
 }
 
 /* Draw arrow (closed points LEFT) */
-.menuDock .menuArrow::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  margin:auto;
-  width:10px;
-  height:10px;
-  border-left:2px solid var(--accent);
-  border-bottom:2px solid var(--accent);
-  transform:rotate(45deg);
-  opacity:.9;
+.menuDock .menuArrow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 10px;
+    height: 10px;
+    border-left: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(45deg);
+    opacity: .9;
 }
 
 /* When open, point RIGHT */
-.menuDock.open .menuArrow::before{
-  transform:rotate(-135deg);
+.menuDock.open .menuArrow::before {
+    transform: rotate(-135deg);
 }
 
 
@@ -1384,6 +1418,6 @@ body::after {
    The sidebar is an overlay that lives outside the left edge of the app frame.
    Keeping appBody unshifted prevents the map area from shrinking when the nav opens.
 */
-.app.hasSidebar .appBody{
+.app.hasSidebar .appBody {
     padding-left: 0 !important;
 }
