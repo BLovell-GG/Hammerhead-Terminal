@@ -46,10 +46,10 @@ body {
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     color: var(--text);
     background:
-        radial-gradient(1200px 800px at 50% 30%,
-            color-mix(in srgb, var(--accent) 10%, transparent) 0%,
-            var(--bg) 60%,
-            #03070b 100%);
+        radial-gradient(1100px 720px at 50% 22%,
+            color-mix(in srgb, var(--accent) 6%, transparent) 0%,
+            transparent 65%),
+        linear-gradient(180deg, #03070b 0%, var(--bg) 60%, #02060a 100%);
     overflow: hidden;
 }
 
@@ -71,8 +71,8 @@ body::before {
     background-size: 48px 48px, 48px 48px, 180px 180px, 180px 180px;
     background-position: 0 0, 0 0, 12px 18px, 12px 18px;
 
+    opacity: .08;
     mix-blend-mode: normal;
-    opacity: .10;
 
     animation: gridDrift 42s linear infinite;
 }
@@ -88,20 +88,23 @@ body::before {
 }
 
 /* ===== Corner UNSC watermark ===== */
-.unsc-emblem{
-  position: fixed;
-  top: 18px;
-  left: 18px;
-  height: 88px;
-  width: auto;
+.unsc-emblem {
+    position: fixed;
+    top: 22px;
+    left: 22px;
 
-  z-index: 9999;
-  pointer-events: none;
+    height: 140px;
+    /* increased size */
+    width: auto;
+    /* preserve aspect ratio */
 
-  opacity: 0.18;
-  filter:
-    drop-shadow(0 0 6px rgba(79,168,216,0.25))
-    drop-shadow(0 0 18px rgba(79,168,216,0.10));
+    z-index: 9999;
+    pointer-events: none;
+
+    opacity: 0.14;
+    /* slightly lower so bigger doesn't overpower */
+    filter:
+        brightness(0.85) drop-shadow(0 0 6px rgba(79, 168, 216, 0.18));
 }
 
 body::after {
@@ -110,13 +113,15 @@ body::after {
     inset: 0;
     pointer-events: none;
     z-index: 0;
+
     background: repeating-linear-gradient(to bottom,
             rgba(255, 255, 255, .02),
             rgba(255, 255, 255, .02) 1px,
             transparent 1px,
-            transparent 4px);
-    opacity: .10;
-    mix-blend-mode: overlay;
+            transparent 5px);
+
+    opacity: .06;
+    mix-blend-mode: normal;
 }
 
 @media (prefers-reduced-motion:reduce) {
