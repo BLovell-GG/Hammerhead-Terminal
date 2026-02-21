@@ -42,6 +42,10 @@
     const appTitle = $("#appTitle");
     const appSub = $("#appSub");
 
+    // Node data panel
+    const nodeSelection = $("#nodeSelection");
+    const nodeHint = $("#nodeHint");
+
     // Telemetry graphs
     const netVal = $("#netVal");
     const cpuVal = $("#cpuVal");
@@ -281,6 +285,27 @@
         lock: "LOCK TERMINAL",
     };
 
+    const ROUTE_HINTS = {
+        map: "Click a planet to view regions & contracts.",
+        contracts: "Select a region, then review available contracts for that AO.",
+        factions: "Review faction standings. Some contracts modify reputation.",
+        ship: "Check hull status, modules, cargo, and fleet readiness.",
+        logs: "Review campaign events, transmissions, and mission outcomes.",
+        settings: "Adjust audio/visual settings for this terminal.",
+        lock: "Return to login / power state."
+    };
+
+    const ROUTE_SELECTION = {
+        map: "System Map",
+        contracts: "Contracts",
+        factions: "Factions",
+        ship: "Ship Status",
+        logs: "Logs",
+        settings: "Settings",
+        lock: "—"
+    };
+
+
     function setRoute(route) {
         // views
         for (const v of views) {
@@ -291,6 +316,8 @@
             b.classList.toggle("active", b.dataset.route === route);
         }
         setText(appTitle, ROUTE_TITLES[route] ?? "BRIDGE / SYSTEM");
+        setText(nodeSelection, ROUTE_SELECTION[route] ?? "None");
+        setText(nodeHint, ROUTE_HINTS[route] ?? "");
     }
 
     function openSidebar() {

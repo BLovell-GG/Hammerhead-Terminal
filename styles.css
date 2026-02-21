@@ -1305,3 +1305,34 @@ body::after {
     transform: rotate(-135deg);
     /* points RIGHT */
 }
+
+/* ==========================================================
+   FIX PACK: Dock button spacing, sidebar rounding/centering,
+   view stacking, and full-height Node Data (2026-02-21)
+   ========================================================== */
+
+/* Ensure app body/grid fills the available height */
+.appBody { height: 100%; align-items: stretch; }
+.mapPane, .infoPane { height: 100%; }
+
+/* Node Data: fill column height cleanly */
+.infoPane { display: flex; flex-direction: column; }
+
+/* Views: only the active view should render (prevents text overlap) */
+.mapPane .view { display: none; height: 100%; }
+.mapPane .view.active { display: block; }
+
+/* Sidebar: round the free (left) edge and center it vertically a bit */
+.sideNav {
+  top: 96px !important;
+  bottom: 96px !important;
+  border-radius: 18px 0 0 18px !important;
+}
+
+/* Dock button: sit slightly more left when drawer is open, and stay above nav */
+.menuDock { z-index: 60; left: -18px; }
+.menuDock.open { transform: translateY(-50%) translateX(-320px) !important; }
+
+/* When sidebar is open, keep the close button/dock above content */
+.sideNav, .sideOverlay { z-index: 40 !important; }
+.menuDock { z-index: 60 !important; }
