@@ -1143,7 +1143,7 @@ body::after {
 
 /* When sidebar is open, shift appBody content so it feels connected (optional) */
 .app.hasSidebar .appBody {
-    padding-left: 280px;
+    padding-left: 0; /* was 280px; sidebar is overlay */
     transition: padding-left 220ms ease;
 }
 
@@ -1376,4 +1376,14 @@ body::after {
 /* When open, point RIGHT */
 .menuDock.open .menuArrow::before{
   transform:rotate(-135deg);
+}
+
+
+
+/* ===== FIX: Sidebar should NOT shrink/shift the main content =====
+   The sidebar is an overlay that lives outside the left edge of the app frame.
+   Keeping appBody unshifted prevents the map area from shrinking when the nav opens.
+*/
+.app.hasSidebar .appBody{
+    padding-left: 0 !important;
 }
