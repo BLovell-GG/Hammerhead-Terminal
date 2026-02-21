@@ -98,15 +98,24 @@ body::after {
     }
 }
 
+.unsc-emblem {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+
+    height: clamp(64px, 6vw, 140px);
+    width: auto;
+
+    opacity: 0.14;
+    pointer-events: none;
+    z-index: 1000;
+}
 
 .wrap {
-    position: relative;
-    z-index: 1;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 36px;
 }
 
 /* ===== shared helpers ===== */
@@ -134,7 +143,8 @@ body::after {
 
 /* ===== LOGIN PANEL ===== */
 .panel {
-    width: min(920px, 100%);
+    width: clamp(760px, 72vw, 1120px);
+    max-width: calc(100vw - 48px);
     border: 1px solid rgba(0, 200, 255, .18);
     background: linear-gradient(180deg, rgba(11, 28, 42, .92), rgba(6, 17, 27, .92));
     box-shadow:
