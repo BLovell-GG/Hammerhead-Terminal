@@ -478,7 +478,7 @@ body::after {
     display: grid;
     grid-template-rows: auto 1fr;
     gap: 12px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .app.hidden {
@@ -511,13 +511,10 @@ body::after {
     grid-template-columns: 1fr 320px;
     gap: 14px;
     min-height: 0;
-    height: 100%;
-    align-items: stretch;
 }
 
 .mapPane {
     min-height: 0;
-    height: 100%;
     display: grid;
     border: 1px solid rgba(27, 58, 82, .8);
     border-radius: 12px;
@@ -554,7 +551,7 @@ body::after {
 
 .infoPane {
     min-height: 0;
-    height: 100%;
+
     border: 1px solid rgba(27, 58, 82, .8);
     border-radius: 12px;
     background: rgba(0, 0, 0, .16);
@@ -1037,37 +1034,26 @@ body::after {
     box-shadow: 0 0 0 1px rgba(0, 200, 255, .18);
 }
 
-/* ===== Sidebar navigation (slides OUTWARD to the LEFT) ===== */
+/* ===== Sidebar navigation (attached to app frame) ===== */
 .sideNav {
     position: absolute;
-    right: 100%;
-    left: auto;
-
+    left: 0;
     top: 62px;
+    /* just below header line */
     bottom: 0;
     width: 280px;
-
     border-right: 1px solid rgba(0, 200, 255, .18);
     background: linear-gradient(180deg, rgba(11, 28, 42, .86), rgba(6, 17, 27, .92));
-    box-shadow: -14px 0 40px rgba(0, 0, 0, .45);
-
-    /* CLOSED: hidden + tucked behind the edge */
-    transform: translateX(100%);
-    opacity: 0;
-    pointer-events: none;
-
-    transition: transform 220ms ease, opacity 140ms ease;
-
+    box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
+    transform: translateX(-100%);
+    transition: transform 220ms ease;
     z-index: 20;
     display: flex;
     flex-direction: column;
 }
 
 .sideNav.open {
-    /* OPEN: slides outward to the left (into view) */
     transform: translateX(0);
-    opacity: 1;
-    pointer-events: auto;
 }
 
 .sideHdr {
@@ -1134,7 +1120,7 @@ body::after {
 /* darken content behind sidebar when open */
 .sideOverlay {
     position: absolute;
-    inset: 0;
+    inset: 62px 0 0 0;
     background: rgba(0, 0, 0, .35);
     opacity: 0;
     pointer-events: none;
@@ -1149,7 +1135,8 @@ body::after {
 
 /* When sidebar is open, shift appBody content so it feels connected (optional) */
 .app.hasSidebar .appBody {
-    padding-left: 0;
+    padding-left: 280px;
+    transition: padding-left 220ms ease;
 }
 
 @media (max-width: 980px) {
@@ -1167,6 +1154,30 @@ body::after {
 
     .app.hasSidebar .appBody {
         padding-left: 0;
+    }
+}
+
+/* On narrower layouts there may be no "empty space" to the left of the terminal.
+   In that case, fall back to an in-panel drawer so NAV is always reachable. */
+@media (max-width: 1180px) {
+    .sideNav {
+        right: auto;
+        left: 0;
+        box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
+        /* closed: off-canvas to the left */
+        transform: translateX(-100%);
+        opacity: 1;
+        pointer-events: none;
+    }
+
+    .sideNav.open {
+        transform: translateX(0);
+        pointer-events: auto;
+    }
+
+    /* Keep the dock button from flying off-screen on small widths */
+    .menuDock.open {
+        transform: translateY(-50%) translateX(0);
     }
 }
 
@@ -1191,12 +1202,6 @@ body::after {
     cursor: pointer;
     z-index: 50;
 }
-
-/* When sidebar is open, move the dock button left so it stays attached */
-.menuDock.open {
-    transform: translateY(-50%) translateX(-280px);
-}
-
 
 .menuDock:hover {
     border-color: rgba(0, 200, 255, 0.40);
