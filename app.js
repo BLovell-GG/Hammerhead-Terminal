@@ -187,8 +187,12 @@
         }
         setMusicBtn();
     }
+
+    // If the user is already in PLAY state, ensure we resume once the browser can play.
+    music.addEventListener("canplay", () => {
         if (playing) music.play().catch(() => { });
     });
+
 
     prevTrack?.addEventListener("click", () => {
         loadTrack(trackIndex - 1);
