@@ -7,7 +7,7 @@
     const CAMPAIGN_DATE = "21 FEB 2518";
     const STAR_SYSTEM = "UNKNOWN";
     const REQUIRED_PASSWORD = "FR-2521"; // placeholder (can be changed later)
-    const DEFAULT_USERNAME = "CMD_101ST_NOVA";
+    const DEFAULT_USERNAME = "CMD_101ST_NOVA"; // login panel display
 
     // Music playlist (ogg). Paths are relative to site root.
     const PLAYLIST = [
@@ -45,6 +45,7 @@
     // Telemetry graphs
     const netVal = $("#netVal");
     const cpuVal = $("#cpuVal");
+    // Telemetry canvases
     const netGraph = $("#netCanvas");
     const cpuGraph = $("#cpuCanvas");
 
@@ -345,11 +346,12 @@
         appShell?.classList.remove("hidden");
         loginScreen?.classList.add("hidden");
     }
+
     function lockTerminal() {
+        // hard reset sidebar/overlay/button state
+        closeSidebar();
         powered = false;
         authed = false;
-
-        closeSidebar();
 
         // reset UI
         authModule?.classList.add("hidden");
@@ -434,6 +436,7 @@
 
         // Transition
         showApp();
+        // ensure drawer + dimmer are in the expected state on entry
         closeSidebar();
         setText(appSub, "FM-FR-2521 • RELAY STATUS: ACTIVE");
         setRoute("map");
@@ -441,4 +444,6 @@
 
     // init
     lockTerminal();
+    // Extra safety: ensure no stray "open" classes remain after first paint.
+    closeSidebar();
 })();

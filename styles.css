@@ -478,6 +478,7 @@ body::after {
     display: grid;
     grid-template-rows: auto 1fr;
     gap: 12px;
+    /* Allow the sidebar drawer to render OUTSIDE the terminal frame (left empty space). */
     overflow: visible;
 }
 
@@ -1155,6 +1156,73 @@ body::after {
     .app.hasSidebar .appBody {
         padding-left: 0;
     }
+}
+
+/* ==========================================================
+   Sidebar drawer behavior (FINAL override)
+   - CLOSED: hidden (no dim)
+   - OPEN: slides out into the empty space LEFT of the terminal
+   - Dimmer only appears when OPEN
+   These rules intentionally override earlier sidebar styles.
+   ========================================================== */
+
+/* Allow the drawer to render outside the terminal frame */
+.app {
+    overflow: visible;
+}
+
+/* Drawer lives just OUTSIDE the terminal's left edge */
+.sideNav {
+    left: auto !important;
+    right: 100% !important;
+    top: 62px !important;
+    bottom: 0 !important;
+    width: 280px !important;
+
+    /* CLOSED = tucked behind edge + invisible */
+    transform: translateX(100%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+
+    transition: transform 220ms ease, opacity 140ms ease !important;
+    z-index: 30 !important;
+}
+
+.sideNav.open {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Dimmer should ONLY appear when the menu is OPEN */
+.sideOverlay {
+    inset: 0 !important;
+    z-index: 25 !important;
+}
+
+/* Sidebar is outside, so never shift content */
+.app.hasSidebar .appBody {
+    padding-left: 0 !important;
+}
+
+/* Dock button stays attached to the drawer edge */
+.menuDock {
+    z-index: 35;
+}
+
+.menuDock.open {
+    transform: translateY(-50%) translateX(-280px);
+}
+
+/* Arrow direction:
+   - CLOSED: points RIGHT (indicates "open")
+   - OPEN: points LEFT  (indicates "close") */
+.menuArrow::before {
+    transform: rotate(-135deg);
+}
+
+.menuArrow.open::before {
+    transform: rotate(45deg);
 }
 
 /* On narrower layouts there may be no "empty space" to the left of the terminal.
