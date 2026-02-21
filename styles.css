@@ -88,24 +88,20 @@ body::before {
 }
 
 /* ===== Corner UNSC watermark ===== */
-.unscMark {
-    position: fixed;
-    top: 18px;
-    left: 18px;
-    width: 86px;
-    height: 86px;
-    z-index: 2;
-    pointer-events: none;
+.unsc-emblem{
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  height: 88px;
+  width: auto;
 
-    /* Use the SVG as a mask so we can tint it with CSS */
-    -webkit-mask: url("assets/unsc-mark.svg") no-repeat center / contain;
-    mask: url("assets/unsc-mark.svg") no-repeat center / contain;
+  z-index: 9999;
+  pointer-events: none;
 
-    background: var(--accent);
-    /* tint color */
-    opacity: 0.20;
-    /* subtle */
-    filter: drop-shadow(0 0 10px var(--accent-a20));
+  opacity: 0.18;
+  filter:
+    drop-shadow(0 0 6px rgba(79,168,216,0.25))
+    drop-shadow(0 0 18px rgba(79,168,216,0.10));
 }
 
 body::after {
