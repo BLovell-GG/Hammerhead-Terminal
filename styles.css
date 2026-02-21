@@ -7,7 +7,19 @@
     --muted: #7f9ab1;
     --accent: #00c8ff;
     --accent2: #46e3ff;
-    --ok: #7dffb2;
+    --accent-a03: color-mix(in srgb, var(--accent) 3%, transparent);
+    --accent-a06: color-mix(in srgb, var(--accent) 6%, transparent);
+    --accent-a08: color-mix(in srgb, var(--accent) 8%, transparent);
+    --accent-a10: color-mix(in srgb, var(--accent) 10%, transparent);
+    --accent-a12: color-mix(in srgb, var(--accent) 12%, transparent);
+    --accent-a16: color-mix(in srgb, var(--accent) 16%, transparent);
+    --accent-a18: color-mix(in srgb, var(--accent) 18%, transparent);
+    --accent-a20: color-mix(in srgb, var(--accent) 20%, transparent);
+    --accent-a22: color-mix(in srgb, var(--accent) 22%, transparent);
+    --accent-a28: color-mix(in srgb, var(--accent) 28%, transparent);
+    --accent-a35: color-mix(in srgb, var(--accent) 35%, transparent);
+    --accent-a55: color-mix(in srgb, var(--accent) 55%, transparent);
+    --ok: #3da0ff;
     --warn: #ffd27d;
     --danger: #ff3b3b;
 }
@@ -41,8 +53,8 @@ body::before {
     /* Add your watermark asset here (SVG/PNG). If the file doesn't exist, it just won't show. */
     background-image:
         url("assets/unsc-watermark.svg"),
-        linear-gradient(rgba(0, 200, 255, .05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 200, 255, .03) 1px, transparent 1px);
+        linear-gradient(color-mix(in srgb, var(--accent) 5%, transparent) 1px, transparent 1px),
+        linear-gradient(color-mix(in srgb, var(--accent-a03) 5%, transparent) 1px, transparent 1px);
 
     background-repeat: no-repeat, repeat, repeat;
     background-size: 640px, 48px 48px, 48px 48px;
@@ -55,8 +67,13 @@ body::before {
 }
 
 @keyframes gridDrift {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-120px, -80px, 0); }
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    100% {
+        transform: translate3d(-120px, -80px, 0);
+    }
 }
 
 
@@ -76,7 +93,9 @@ body::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    body::before { animation: none !important; }
+    body::before {
+        animation: none !important;
+    }
 }
 
 
@@ -592,26 +611,16 @@ body::after {
 }
 
 .boot-screen {
-    background: radial-gradient(circle at 30% 20%, rgba(90, 255, 190, 0.08), transparent 55%),
-        radial-gradient(circle at 70% 80%, rgba(90, 255, 190, 0.06), transparent 60%),
+    background: radial-gradient(circle at 30% 20%, rgba(110, 180, 255, 0.08), transparent 55%),
+        radial-gradient(circle at 70% 80%, rgba(110, 180, 255, 0.06), transparent 60%),
         rgba(0, 0, 0, 0.92);
-}
-
-.panel {
-    width: min(920px, 95vw);
-    border: 1px solid rgba(90, 255, 190, 0.28);
-    box-shadow: 0 0 0 1px rgba(90, 255, 190, 0.10), 0 18px 80px rgba(0, 0, 0, 0.6);
-    background: rgba(6, 12, 10, 0.75);
-    backdrop-filter: blur(6px);
-    border-radius: 12px;
-    overflow: hidden;
 }
 
 .panel-header {
     display: flex;
     gap: 10px;
     padding: 12px 14px;
-    border-bottom: 1px solid rgba(90, 255, 190, 0.18);
+    border-bottom: 1px solid rgba(110, 180, 255, 0.18);
 }
 
 .tag {
@@ -619,11 +628,7 @@ body::after {
     font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(90, 255, 190, 0.9);
-}
-
-.dim {
-    opacity: 0.65;
+    color: rgba(110, 180, 255, 0.9);
 }
 
 .boot-log {
@@ -639,14 +644,14 @@ body::after {
 
 .boot-footer {
     padding: 12px 14px 14px;
-    border-top: 1px solid rgba(90, 255, 190, 0.18);
+    border-top: 1px solid rgba(110, 180, 255, 0.18);
     display: grid;
     gap: 10px;
 }
 
 .boot-progress {
     height: 10px;
-    border: 1px solid rgba(90, 255, 190, 0.25);
+    border: 1px solid rgba(110, 180, 255, 0.25);
     border-radius: 999px;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.35);
@@ -655,8 +660,8 @@ body::after {
 .boot-bar {
     height: 100%;
     width: 0%;
-    background: rgba(90, 255, 190, 0.75);
-    box-shadow: 0 0 18px rgba(90, 255, 190, 0.35);
+    background: rgba(110, 180, 255, 0.75);
+    box-shadow: 0 0 18px rgba(110, 180, 255, 0.35);
     transition: width 220ms linear;
 }
 
@@ -678,7 +683,7 @@ body::after {
 }
 
 .side-nav {
-    border-right: 1px solid rgba(90, 255, 190, 0.18);
+    border-right: 1px solid rgba(110, 180, 255, 0.18);
     padding: 18px 16px;
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -689,7 +694,7 @@ body::after {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(90, 255, 190, 0.95);
+    color: rgba(110, 180, 255, 0.95);
     font-size: 14px;
 }
 
@@ -706,7 +711,7 @@ body::after {
 }
 
 .nav-item {
-    border: 1px solid rgba(90, 255, 190, 0.18);
+    border: 1px solid rgba(110, 180, 255, 0.18);
     background: rgba(10, 20, 16, 0.55);
     color: rgba(215, 255, 240, 0.92);
     padding: 12px;
@@ -718,8 +723,8 @@ body::after {
 }
 
 .nav-item.active {
-    border-color: rgba(90, 255, 190, 0.45);
-    box-shadow: 0 0 0 1px rgba(90, 255, 190, 0.12);
+    border-color: rgba(110, 180, 255, 0.45);
+    box-shadow: 0 0 0 1px rgba(110, 180, 255, 0.12);
 }
 
 .main {
@@ -731,7 +736,7 @@ body::after {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(90, 255, 190, 0.18);
+    border-bottom: 1px solid rgba(110, 180, 255, 0.18);
     padding: 16px 18px;
 }
 
@@ -739,7 +744,7 @@ body::after {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(90, 255, 190, 0.95);
+    color: rgba(110, 180, 255, 0.95);
 }
 
 .topbar-right {
@@ -748,7 +753,7 @@ body::after {
 }
 
 .chip {
-    border: 1px solid rgba(90, 255, 190, 0.18);
+    border: 1px solid rgba(110, 180, 255, 0.18);
     background: rgba(10, 20, 16, 0.45);
     padding: 8px 10px;
     border-radius: 999px;
@@ -779,8 +784,8 @@ body::after {
 }
 
 .card {
-    border: 1px solid rgba(90, 255, 190, 0.18);
-    background: rgba(10, 20, 16, 0.40);
+    border: 1px solid var(--accent-a18);
+    background: color-mix(in srgb, var(--panel) 85%, transparent);
     border-radius: 12px;
     padding: 14px;
 }
@@ -791,7 +796,7 @@ body::after {
     letter-spacing: 0.12em;
     text-transform: uppercase;
     font-size: 13px;
-    color: rgba(90, 255, 190, 0.9);
+    color: var(--accent);
 }
 
 .table {
@@ -803,14 +808,14 @@ body::after {
 
 .table th,
 .table td {
-    border-bottom: 1px solid rgba(90, 255, 190, 0.14);
+    border-bottom: 1px solid var(--accent-a14);
     padding: 10px 8px;
     text-align: left;
     color: rgba(215, 255, 240, 0.92);
 }
 
 .table th {
-    color: rgba(90, 255, 190, 0.9);
+    color: var(--accent);
     letter-spacing: 0.10em;
     text-transform: uppercase;
     font-size: 12px;
@@ -820,8 +825,8 @@ body::after {
     display: inline-block;
     padding: 4px 8px;
     border-radius: 999px;
-    border: 1px solid rgba(90, 255, 190, 0.22);
-    background: rgba(10, 20, 16, 0.45);
+    border: 1px solid var(--accent-a22);
+    background: color-mix(in srgb, var(--panel) 80%, transparent);
     font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -832,10 +837,12 @@ body::after {
     border-color: rgba(255, 210, 125, .22);
     background: rgba(0, 0, 0, .20);
 }
+
 .status.off .dot {
     background: var(--warn);
     box-shadow: 0 0 14px rgba(255, 210, 125, .18);
 }
+
 .status.online .dot {
     background: var(--accent);
     box-shadow: 0 0 18px rgba(0, 200, 255, .22);
@@ -892,4 +899,3 @@ body::after {
     border-color: rgba(0, 200, 255, .55);
     background: rgba(0, 200, 255, .16);
 }
-
