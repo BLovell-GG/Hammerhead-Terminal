@@ -407,11 +407,69 @@ body::after {
     }
 }
 
+/* ===== Top-right HUD telemetry ===== */
+.hud-right {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    display: grid;
+    gap: 10px;
+    z-index: 900;
+    /* below emblem if you want, above panels */
+    pointer-events: none;
+    /* HUD is not interactive */
+}
+
+.miniStat {
+    width: 220px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(6, 17, 27, 0.62);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 0 1px rgba(0, 200, 255, 0.06);
+    padding: 10px 10px 8px;
+}
+
+.miniStatTop {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.miniStatLabel {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.1;
+}
+
+.miniStatVal {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    color: rgba(207, 216, 227, 0.95);
+}
+
+.miniStatCanvas {
+    width: 100%;
+    height: 46px;
+    display: block;
+    border-radius: 8px;
+    background:
+        linear-gradient(to bottom, rgba(0, 200, 255, .12), transparent 70%),
+        repeating-linear-gradient(to right, rgba(255, 255, 255, .06) 0 1px, transparent 1px 18px);
+    border: 1px solid rgba(27, 58, 82, 0.7);
+}
+
 /* ===== APP SHELL (placeholder) ===== */
 .app {
     position: relative;
-    width: min(1200px, calc(100vw - 2 * clamp(12px, 3vw, 36px)));
-    max-height: calc(100svh - 2 * clamp(12px, 3vw, 36px));
+    width: min(1180px, calc(100vw - 72px));
+    height: min(760px, calc(100svh - 72px));
     border: 1px solid rgba(0, 200, 255, .18);
     background: linear-gradient(180deg, rgba(11, 28, 42, .92), rgba(6, 17, 27, .92));
     box-shadow: 0 0 0 1px rgba(0, 200, 255, .08), 0 24px 90px rgba(0, 0, 0, .60);
@@ -433,7 +491,7 @@ body::after {
     justify-content: space-between;
     border-bottom: 1px solid rgba(27, 58, 82, .8);
     padding-bottom: 12px;
-    }
+}
 
 .appTitle {
     letter-spacing: .18em;
@@ -450,14 +508,14 @@ body::after {
 
 .appBody {
     display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 12px;
+    grid-template-columns: 1fr 320px;
+    gap: 14px;
     min-height: 0;
 }
 
 .mapPane {
     min-height: 0;
-
+    display: grid;
     border: 1px solid rgba(27, 58, 82, .8);
     border-radius: 12px;
     background: radial-gradient(900px 500px at 50% 30%, rgba(0, 200, 255, .10), rgba(0, 0, 0, .10));
@@ -473,6 +531,8 @@ body::after {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    min-height: 0;
+    height: 100%;
 }
 
 .mapBig {
@@ -920,149 +980,236 @@ body::after {
 }
 
 /* ===== Telemetry mini-graphs (top bar) ===== */
-.telemetry{
-    display:flex;
-    gap:10px;
-    align-items:flex-end;
-    margin-left:auto;
-    margin-right:14px;
+.telemetry {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    margin-left: auto;
+    margin-right: 14px;
 }
-.teleCard{
-    width:170px;
-    border:1px solid rgba(0,200,255,.18);
-    border-radius:10px;
-    background:rgba(6,17,27,.35);
-    padding:8px 10px 10px;
+
+.teleCard {
+    width: 170px;
+    border: 1px solid rgba(0, 200, 255, .18);
+    border-radius: 10px;
+    background: rgba(6, 17, 27, .35);
+    padding: 8px 10px 10px;
 }
-.teleHdr{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    gap:10px;
-    font-size:11px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--text);
-    margin-bottom:6px;
+
+.teleHdr {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 6px;
 }
-.teleGraph{
-    width:100%;
-    height:42px;
-    display:block;
-    border-radius:6px;
-    background:rgba(0,0,0,.18);
+
+.teleGraph {
+    width: 100%;
+    height: 42px;
+    display: block;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, .18);
 }
 
 /* ===== MENU button (opens sidebar) ===== */
-.menuBtn{
-    border:1px solid rgba(0,200,255,.28);
-    background:rgba(0,200,255,.10);
-    color:var(--text);
-    padding:8px 14px;
-    border-radius:999px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    font-weight:900;
-    cursor:pointer;
-    font-size:11px;
+.menuBtn {
+    border: 1px solid rgba(0, 200, 255, .28);
+    background: rgba(0, 200, 255, .10);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 999px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    font-weight: 900;
+    cursor: pointer;
+    font-size: 11px;
 }
-.menuBtn:hover{
-    box-shadow:0 0 0 1px rgba(0,200,255,.18);
+
+.menuBtn:hover {
+    box-shadow: 0 0 0 1px rgba(0, 200, 255, .18);
 }
 
 /* ===== Sidebar navigation (attached to app frame) ===== */
-.sideNav{
-    position:absolute;
-    left:0;
-    top:62px; /* just below header line */
-    bottom:0;
-    width:280px;
-    border-right:1px solid rgba(0,200,255,.18);
-    background:linear-gradient(180deg, rgba(11,28,42,.86), rgba(6,17,27,.92));
-    box-shadow: 14px 0 40px rgba(0,0,0,.45);
+.sideNav {
+    position: absolute;
+    left: 0;
+    top: 62px;
+    /* just below header line */
+    bottom: 0;
+    width: 280px;
+    border-right: 1px solid rgba(0, 200, 255, .18);
+    background: linear-gradient(180deg, rgba(11, 28, 42, .86), rgba(6, 17, 27, .92));
+    box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
     transform: translateX(-100%);
     transition: transform 220ms ease;
-    z-index:20;
-    display:flex;
-    flex-direction:column;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
 }
-.sideNav.open{
+
+.sideNav.open {
     transform: translateX(0);
 }
-.sideHdr{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:14px 14px 12px;
-    border-bottom:1px solid rgba(27,58,82,.8);
+
+.sideHdr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 14px 12px;
+    border-bottom: 1px solid rgba(27, 58, 82, .8);
 }
-.sideTitle{
-    font-weight:900;
-    letter-spacing:.18em;
-    text-transform:uppercase;
+
+.sideTitle {
+    font-weight: 900;
+    letter-spacing: .18em;
+    text-transform: uppercase;
 }
-.sideClose{
-    width:34px;height:34px;
-    border-radius:10px;
-    border:1px solid rgba(0,200,255,.22);
-    background:rgba(0,200,255,.08);
-    color:var(--text);
-    cursor:pointer;
+
+.sideClose {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 200, 255, .22);
+    background: rgba(0, 200, 255, .08);
+    color: var(--text);
+    cursor: pointer;
 }
-.sideBtns{
-    padding:14px;
-    display:grid;
-    gap:10px;
-    overflow:auto;
+
+.sideBtns {
+    padding: 14px;
+    display: grid;
+    gap: 10px;
+    overflow: auto;
 }
-.sideBtn{
-    width:100%;
-    text-align:left;
-    border:1px solid rgba(0,200,255,.18);
-    background:rgba(0,0,0,.18);
-    color:var(--text);
-    padding:12px 12px;
-    border-radius:12px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    font-weight:900;
-    cursor:pointer;
-    font-size:11px;
+
+.sideBtn {
+    width: 100%;
+    text-align: left;
+    border: 1px solid rgba(0, 200, 255, .18);
+    background: rgba(0, 0, 0, .18);
+    color: var(--text);
+    padding: 12px 12px;
+    border-radius: 12px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    font-weight: 900;
+    cursor: pointer;
+    font-size: 11px;
 }
-.sideBtn:hover{ box-shadow:0 0 0 1px rgba(0,200,255,.14); }
-.sideBtn.active{
-    border-color: rgba(0,200,255,.45);
-    background: rgba(0,200,255,.10);
+
+.sideBtn:hover {
+    box-shadow: 0 0 0 1px rgba(0, 200, 255, .14);
 }
-.sideSep{
-    height:1px;
-    background: rgba(27,58,82,.8);
-    margin:6px 0;
+
+.sideBtn.active {
+    border-color: rgba(0, 200, 255, .45);
+    background: rgba(0, 200, 255, .10);
+}
+
+.sideSep {
+    height: 1px;
+    background: rgba(27, 58, 82, .8);
+    margin: 6px 0;
 }
 
 /* darken content behind sidebar when open */
-.sideOverlay{
-    position:absolute;
-    inset:62px 0 0 0;
-    background:rgba(0,0,0,.35);
-    opacity:0;
-    pointer-events:none;
+.sideOverlay {
+    position: absolute;
+    inset: 62px 0 0 0;
+    background: rgba(0, 0, 0, .35);
+    opacity: 0;
+    pointer-events: none;
     transition: opacity 180ms ease;
-    z-index:15;
+    z-index: 15;
 }
-.sideOverlay.open{
-    opacity:1;
-    pointer-events:auto;
+
+.sideOverlay.open {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 /* When sidebar is open, shift appBody content so it feels connected (optional) */
-.app.hasSidebar .appBody{
+.app.hasSidebar .appBody {
     padding-left: 280px;
     transition: padding-left 220ms ease;
 }
-@media (max-width: 980px){
-    .telemetry{ display:none; }
-    .appBody{ grid-template-columns: 1fr; }
-    .infoPane{ display:none; }
-    .app.hasSidebar .appBody{ padding-left: 0; }
+
+@media (max-width: 980px) {
+    .telemetry {
+        display: none;
+    }
+
+    .appBody {
+        grid-template-columns: 1fr;
+    }
+
+    .infoPane {
+        display: none;
+    }
+
+    .app.hasSidebar .appBody {
+        padding-left: 0;
+    }
+}
+
+/* ===== Panel-docked menu arrow ===== */
+.app {
+    position: relative;
+    /* needed so the dock can align to the panel */
+}
+
+.menuDock {
+    position: absolute;
+    left: -14px;
+    /* sticks out of the panel edge */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 54px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: rgba(6, 17, 27, 0.72);
+    box-shadow: 0 0 0 1px rgba(0, 200, 255, .06);
+    cursor: pointer;
+    z-index: 50;
+}
+
+.menuDock:hover {
+    border-color: rgba(0, 200, 255, 0.40);
+}
+
+.menuArrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(6, 17, 27, 0.55);
+    position: relative;
+    cursor: pointer;
+}
+
+/* draw the arrow */
+.menuArrow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 10px;
+    height: 10px;
+    border-left: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(45deg);
+    /* points LEFT */
+    opacity: 0.9;
+}
+
+/* when open, flip to point RIGHT */
+.menuArrow.open::before {
+    transform: rotate(-135deg);
+    /* points RIGHT */
 }

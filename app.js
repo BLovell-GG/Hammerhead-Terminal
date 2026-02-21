@@ -32,9 +32,9 @@
     const appEl = document.querySelector(".app");
 
     const menuBtn = $("#menuBtn");
-    const sideNav = $("#sideNav");
+    const sideNav = document.getElementById("sideNav");
     const sideClose = $("#sideClose");
-    const sideOverlay = $("#sideOverlay");
+    const sideOverlay = document.getElementById("sideOverlay");
     const sideBtns = Array.from(document.querySelectorAll(".sideBtn"));
     const views = Array.from(document.querySelectorAll(".view[data-view]"));
 
@@ -295,14 +295,25 @@
         sideNav?.classList.add("open");
         sideOverlay?.classList.add("open");
         appEl?.classList.add("hasSidebar");
+        menuBtn?.classList.add("open");               // flip arrow
+        menuBtn?.setAttribute("aria-expanded", "true");
     }
+
     function closeSidebar() {
         sideNav?.classList.remove("open");
         sideOverlay?.classList.remove("open");
         appEl?.classList.remove("hasSidebar");
+        menuBtn?.classList.remove("open");            // flip back
+        menuBtn?.setAttribute("aria-expanded", "false");
     }
 
-    menuBtn?.addEventListener("click", openSidebar);
+    function toggleSidebar() {
+        const isOpen = sideNav?.classList.contains("open");
+        if (isOpen) closeSidebar();
+        else openSidebar();
+    }
+
+    menuBtn?.addEventListener("click", toggleSidebar);
     sideClose?.addEventListener("click", closeSidebar);
     sideOverlay?.addEventListener("click", closeSidebar);
 
