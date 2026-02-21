@@ -60,19 +60,19 @@ body::before {
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    /* Watermark asset (optional). If file doesn't exist, it simply won't render. */
+
     background-image:
         linear-gradient(to right, var(--accent-a05) 1px, transparent 1px),
         linear-gradient(to bottom, var(--accent-a03) 1px, transparent 1px),
         linear-gradient(to right, var(--accent-a03) 1px, transparent 1px),
         linear-gradient(to bottom, var(--accent-a03) 1px, transparent 1px);
 
-    background-repeat: no-repeat, repeat, repeat, repeat, repeat;
-    background-size: 640px, 48px 48px, 48px 48px, 180px 180px, 180px 180px;
-    background-position: right -140px bottom -90px, 0 0, 0 0, 12px 18px, 12px 18px;
+    background-repeat: repeat, repeat, repeat, repeat;
+    background-size: 48px 48px, 48px 48px, 180px 180px, 180px 180px;
+    background-position: 0 0, 0 0, 12px 18px, 12px 18px;
 
-    opacity: .22;
-    mix-blend-mode: screen;
+    mix-blend-mode: normal;
+    opacity: .10;
 
     animation: gridDrift 42s linear infinite;
 }
