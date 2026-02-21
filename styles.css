@@ -511,10 +511,13 @@ body::after {
     grid-template-columns: 1fr 320px;
     gap: 14px;
     min-height: 0;
+    height: 100%;
+    align-items: stretch;
 }
 
 .mapPane {
     min-height: 0;
+    height: 100%;
     display: grid;
     border: 1px solid rgba(27, 58, 82, .8);
     border-radius: 12px;
@@ -551,7 +554,7 @@ body::after {
 
 .infoPane {
     min-height: 0;
-
+    height: 100%;
     border: 1px solid rgba(27, 58, 82, .8);
     border-radius: 12px;
     background: rgba(0, 0, 0, .16);
