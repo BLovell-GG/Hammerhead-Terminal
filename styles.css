@@ -1041,30 +1041,61 @@ body::after {
 }
 
 /* ===== Sidebar navigation (attached to app frame) ===== */
-.sideNav {
+.sideNav{
     position: absolute;
-    top: 18px;
-    bottom: 18px;
-    left: -280px;
-    /* hidden off screen */
+    top: 14px;
+    bottom: 14px;
+
+    /* Sit OUTSIDE the app panel, to the left */
+    right: 100%;
     width: 280px;
 
-    border-radius: 16px 12px 12px 16px;
-    /* more rounded free edge */
-    border: 1px solid rgba(0, 200, 255, .22);
-    background: rgba(0, 200, 255, .06);
-    backdrop-filter: blur(6px);
-
+    /* hidden by default */
+    transform: translateX(-100%);
     transition: transform 220ms ease;
+
+    border-radius: 18px 14px 14px 18px;
+    border: 1px solid rgba(0, 200, 255, .20);
+    background: rgba(0, 0, 0, .28);
+    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+    overflow: hidden;
+    z-index: 45;
+}
+
+.sideNav.open{
     transform: translateX(0);
-    z-index: 40;
 }
 
-/* When open */
-.sideNav.open {
-    transform: translateX(280px);
+.sideHdr{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 10px;
+    padding: 14px;
+    border-bottom: 1px solid rgba(0, 200, 255, .12);
+    background: linear-gradient(90deg, rgba(0,200,255,.10), rgba(0,0,0,0));
 }
 
+.sideTitle{
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 12px;
+}
+
+.sideClose{
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 200, 255, .20);
+    background: rgba(0, 0, 0, .20);
+    color: var(--text);
+    cursor: pointer;
+}
+.sideClose:hover{
+    border-color: rgba(0,200,255,.40);
+    box-shadow: 0 0 0 1px rgba(0,200,255,.12);
+}
 .sideBtns {
     padding: 14px;
     display: grid;
@@ -1105,7 +1136,7 @@ body::after {
 /* darken content behind sidebar when open */
 .sideOverlay {
     position: absolute;
-    inset: 62px 0 0 0;
+    inset: 0;
     background: rgba(0, 0, 0, .35);
     opacity: 0;
     pointer-events: none;
@@ -1150,7 +1181,7 @@ body::after {
 .menuDock {
     position: absolute;
     left: -17px;
-    /* half outside (button is 34px wide) */
+    /* sticks out of the panel edge */
     top: 50%;
     transform: translateY(-50%);
     width: 34px;
@@ -1163,35 +1194,33 @@ body::after {
     z-index: 50;
 }
 
-.menuDock::after {
-    content: "";
-    position: absolute;
+.menuDock::after{
+    content:"";
+    position:absolute;
     left: 9px;
     top: 50%;
     transform: translateY(-50%);
     width: 2px;
     height: 22px;
     border-radius: 2px;
-    background: rgba(0, 200, 255, 0.25);
-    box-shadow:
-        6px 0 0 rgba(0, 200, 255, 0.18),
-        12px 0 0 rgba(0, 200, 255, 0.12);
+    background: rgba(0,200,255,0.25);
+    box-shadow: 6px 0 0 rgba(0,200,255,0.18),
+                12px 0 0 rgba(0,200,255,0.12);
+}
+.menuDock:hover::after{
+    background: rgba(0,200,255,0.45);
+    box-shadow: 6px 0 0 rgba(0,200,255,0.35),
+                12px 0 0 rgba(0,200,255,0.25);
 }
 
 .menuDock:hover {
     border-color: rgba(0, 200, 255, 0.40);
 }
 
-.menuDock:hover::after {
-    background: rgba(0, 200, 255, 0.45);
-    box-shadow:
-        6px 0 0 rgba(0, 200, 255, 0.35),
-        12px 0 0 rgba(0, 200, 255, 0.25);
-}
-
 /* When sidebar is open, move the dock button left so it stays attached and clears nav buttons */
 .menuDock.open {
-    transform: translateY(-50%) translateX(-280px);
+    transform: translateY(-50%) translateX(-305px);
+}
 }
 
 
@@ -1215,24 +1244,17 @@ body::after {
     height: 10px;
     border-left: 2px solid var(--accent);
     border-bottom: 2px solid var(--accent);
-    transform: rotate(45deg);
+    transform: rotate(-135deg);
     /* points LEFT */
     opacity: 0.9;
 }
 
 /* when open, flip to point RIGHT */
 .menuArrow.open::before {
-    transform: rotate(-135deg);
+    transform: rotate(45deg);
     /* points RIGHT */
 }
 
 /* Route views: only show the active view */
-.view {
-    display: none;
-    height: 100%;
-}
-
-.view.active {
-    display: block;
-    height: 100%;
-}
+.view{display:none; height:100%;}
+.view.active{display:block; height:100%;}

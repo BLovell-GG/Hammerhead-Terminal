@@ -14,6 +14,8 @@
         { name: "ATONEMENT", src: "assets/music/atonement.ogg" },
     ];
 
+    const DEFAULT_USERNAME = "CMD_101ST_NOVA";
+
     // ---------- DOM ----------
     const $ = (sel) => document.querySelector(sel);
 
@@ -41,11 +43,14 @@
     const appTitle = $("#appTitle");
     const appSub = $("#appSub");
 
+    const nodeSelection = $("#nodeSelection");
+    const nodeHint = $("#nodeHint");
+
     // Telemetry graphs
     const netVal = $("#netVal");
     const cpuVal = $("#cpuVal");
-    const netGraph = $("#netGraph");
-    const cpuGraph = $("#cpuGraph");
+    const netCanvas = $("#netCanvas");
+    const cpuCanvas = $("#cpuCanvas");
 
     // Music HUD
     const musicTrack = $("#musicTrack");
@@ -244,14 +249,14 @@
         // network
         netSamples.shift();
         netSamples.push(1.6 + Math.random() * 1.2);
-        drawSpark(netGraph, netSamples);
+        drawSpark(netCanvas, netSamples);
         setText(netVal, netSamples[netSamples.length - 1].toFixed(2));
 
         // cpu
         cpuSamples.shift();
         const next = Math.max(5, Math.min(98, cpuSamples[cpuSamples.length - 1] + (Math.random() - 0.5) * 14));
         cpuSamples.push(next);
-        drawSpark(cpuGraph, cpuSamples);
+        drawSpark(cpuCanvas, cpuSamples);
         setText(cpuVal, `${Math.round(next)}%`);
     }, 650);
 
@@ -290,10 +295,25 @@ const ROUTE_TITLES = {
     };
 
     function setRoute(route) {
-        // views
-        for (const v of views) {
-            v.classList.toggle("active", v.dataset.view === route);
-        }
+    // views
+    for (const v of views) {
+        v.classList.toggle("active", v.dataset.view === route);
+    }
+    // buttons
+    for (const b of sideBtns) {
+        b.classList.toggle("active", b.dataset.route === route);
+    }
+
+    setText(appTitle, ROUTE_TITLES[route] ?? "BRIDGE / SYSTEM");
+
+    // Node Data panel
+    const meta = ROUTE_NODE[route] ?? { selection: "None", hint: "—" };
+    setText(nodeSelection, meta.selection ?? "None");
+    setText(nodeHint, meta.hint ?? "—");
+
+    // Subheader (under title)
+    setText(appSub, "FM-FR-2521 • RELAY STATUS: ACTIVE");
+}
         // buttons
         for (const b of sideBtns) {
             b.classList.toggle("active", b.dataset.route === route);
@@ -356,6 +376,7 @@ const ROUTE_TITLES = {
     }
 
     function lockTerminal() {
+        closeSidebar();
         powered = false;
         authed = false;
 
@@ -417,7 +438,7 @@ const ROUTE_TITLES = {
         loginBtn.disabled = true;
 
         // fake credential entry (swap for real inputs later)
-        setText(uiUser, "GUEST");
+        setText(uiUser, DEFAULT_USERNAME);
         setText(uiPass, "••••••••");
 
         await typeLine("AUTH REQUEST: INITIATED", { delay: 10 });
@@ -442,6 +463,7 @@ const ROUTE_TITLES = {
 
         // Transition
         showApp();
+        closeSidebar();
         setText(appSub, "FM-FR-2521 • RELAY STATUS: ACTIVE");
         setRoute("map");
     });
