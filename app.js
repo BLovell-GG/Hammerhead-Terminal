@@ -44,8 +44,8 @@
     // Telemetry graphs
     const netVal = $("#netVal");
     const cpuVal = $("#cpuVal");
-    const netGraph = $("#netGraph");
-    const cpuGraph = $("#cpuGraph");
+    const netGraph = $("#netCanvas");
+    const cpuGraph = $("#cpuCanvas");
 
     // Music HUD
     const musicTrack = $("#musicTrack");
