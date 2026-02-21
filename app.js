@@ -459,7 +459,7 @@
         loginBtn.disabled = true;
 
         // fake credential entry (swap for real inputs later)
-        setText(uiUser, "GUEST");
+        setText(uiUser, "CMD_101ST_NOVA");
         setText(uiPass, "••••••••");
 
         await typeLine("AUTH REQUEST: INITIATED", { delay: 10 });
