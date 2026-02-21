@@ -217,6 +217,11 @@
             <button class="mBtn" id="prevTrack" type="button">◀</button>
             <button class="mBtn" id="musicToggle" type="button">PLAY</button>
             <button class="mBtn" id="nextTrack" type="button">▶</button>
+            <div class="mProgWrap">
+                <span class="mTime" id="mTimeCur">0:00</span>
+                <input class="mProg" id="musicProgress" type="range" min="0" max="1000" value="0" />
+                <span class="mTime" id="mTimeDur">0:00</span>
+            </div>
             <input class="mVol" id="musicVol" type="range" min="0" max="100" value="35" />
         </div>
     </div>

@@ -10,8 +10,11 @@
 
     // Music playlist (ogg). Paths are relative to site root.
     const PLAYLIST = [
-        { name: "INSIGNIFICANTIA", src: "assets/music/insignificantia.ogg" },
-        { name: "ATONEMENT", src: "assets/music/atonement.ogg" },
+        { name: "INSIGNIFICANTIA", src: "assets/music/halo_wars_insignificantia.ogg" },
+        { name: "SPIRIT OF FIRE", src: "assets/music/halo_wars_spirit_of_fire.ogg" },
+        { name: "ODST // DARKNESS", src: "assets/music/halo3_odst_darkness.ogg" },
+        { name: "ATONEMENT", src: "assets/music/halo4_atonement.ogg" },
+        { name: "IXION // VANIR'S LEGACY", src: "assets/music/ixion_vanirs_legacy.ogg" },
     ];
 
     // ---------- DOM ----------
@@ -53,6 +56,9 @@
     const prevTrack = $("#prevTrack");
     const nextTrack = $("#nextTrack");
     const musicVol = $("#musicVol");
+    const musicProgress = $("#musicProgress");
+    const mTimeCur = $("#mTimeCur");
+    const mTimeDur = $("#mTimeDur");
 
     // Time HUD
     const campDate = $("#campDate");
@@ -108,11 +114,36 @@
     let trackIndex = 0;
     let playing = false;
 
+
+    function fmtTime(sec) {
+        if (!isFinite(sec) || sec < 0) return "0:00";
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return m + ":" + String(s).padStart(2, "0");
+    }
+
+    function syncProgress() {
+        if (!musicProgress) return;
+        const dur = music.duration || 0;
+        const cur = music.currentTime || 0;
+
+        if (mTimeCur) mTimeCur.textContent = fmtTime(cur);
+        if (mTimeDur) mTimeDur.textContent = fmtTime(dur);
+
+        // map 0..dur to 0..1000 to avoid float precision in range
+        const val = dur > 0 ? Math.round((cur / dur) * 1000) : 0;
+        musicProgress.value = String(val);
+    }
+
     function loadTrack(i) {
         trackIndex = (i + PLAYLIST.length) % PLAYLIST.length;
         const t = PLAYLIST[trackIndex];
         music.src = t.src;
         setText(musicTrack, t.name);
+        // reset progress UI until metadata loads
+        if (musicProgress) musicProgress.value = "0";
+        if (mTimeCur) mTimeCur.textContent = "0:00";
+        if (mTimeDur) mTimeDur.textContent = "0:00";
     }
 
     function setMusicVol() {
@@ -156,9 +187,6 @@
         }
         setMusicBtn();
     }
-
-    music.addEventListener("ended", () => {
-        loadTrack(trackIndex + 1);
         if (playing) music.play().catch(() => { });
     });
 
@@ -174,6 +202,26 @@
 
     musicToggle?.addEventListener("click", toggleMusic);
     musicVol?.addEventListener("input", () => setMusicVol());
+
+    musicProgress?.addEventListener("input", () => {
+        const dur = music.duration || 0;
+        if (dur <= 0) return;
+        const v = Number(musicProgress.value || 0) / 1000;
+        music.currentTime = v * dur;
+        syncProgress();
+    });
+
+    music.addEventListener("timeupdate", syncProgress);
+    music.addEventListener("loadedmetadata", syncProgress);
+
+    // Auto-advance to next track; loop playlist when finished.
+    music.addEventListener("ended", () => {
+        loadTrack(trackIndex + 1);
+        // keep playing if user had music on
+        if (playing) {
+            music.play().catch(() => { /* ignore */ });
+        }
+    });
 
     // ---------- TELEMETRY ----------
     function drawSpark(canvas, samples) {

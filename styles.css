@@ -39,7 +39,7 @@ body {
     color: var(--text);
     background:
         radial-gradient(1200px 800px at 50% 30%, #0b2a3f 0%, var(--bg) 60%, #03070b 100%);
-    overflow: hidden;
+    overflow: visible;
 }
 
 /* ===== subtle animated grid + watermark + scanlines ===== */
@@ -1037,23 +1037,31 @@ body::after {
 /* ===== Sidebar navigation (attached to app frame) ===== */
 .sideNav {
     position: absolute;
-    left: 0;
-    top: 62px;
-    /* just below header line */
+    right: 100%;
+    left: auto;
+    top: 62px; /* below header */
     bottom: 0;
     width: 280px;
+
     border-right: 1px solid rgba(0, 200, 255, .18);
     background: linear-gradient(180deg, rgba(11, 28, 42, .86), rgba(6, 17, 27, .92));
-    box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
-    transform: translateX(-100%);
-    transition: transform 220ms ease;
-    z-index: 20;
+    box-shadow: -14px 0 40px rgba(0, 0, 0, .45);
+
+    /* CLOSED */
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+
+    transition: transform 220ms ease, opacity 140ms ease;
+    z-index: 40;
     display: flex;
     flex-direction: column;
 }
 
 .sideNav.open {
     transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .sideHdr {
@@ -1165,7 +1173,7 @@ body::after {
 
 .menuDock {
     position: absolute;
-    left: -14px;
+    left: -17px;
     /* sticks out of the panel edge */
     top: 50%;
     transform: translateY(-50%);
@@ -1184,13 +1192,15 @@ body::after {
 }
 
 .menuArrow {
-    width: 44px;
-    height: 44px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgba(6, 17, 27, 0.55);
+    /* arrow only (no extra circular button) */
+    width: 100%;
+    height: 100%;
+    display: block;
     position: relative;
-    cursor: pointer;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    pointer-events: none;
 }
 
 /* draw the arrow */
@@ -1254,7 +1264,9 @@ body::after {
   border-bottom:2px solid rgba(70,227,255,.95);
   transform:rotate(135deg);
 }
-.menuDock.open{transform:translateY(-50%) translateX(-280px);}
+.menuDock.open {
+    transform: translateY(-50%) translateX(-280px);
+}
 .menuDock.open .menuArrow::before{transform:rotate(-45deg);}
 
 /* Optional tiny grab-handle dots (enabled when .menuDock has .grab) */
@@ -1268,4 +1280,43 @@ body::after {
   transform:translateY(-50%);
   box-shadow:0 -8px 0 rgba(0,200,255,.45), 0 8px 0 rgba(0,200,255,.45);
   opacity:.9;
+}
+
+/* ===== Music HUD progress ===== */
+.mProgWrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.mTime{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 12px;
+    color: var(--muted);
+    min-width: 44px;
+    text-align:center;
+}
+.mProg{
+    width: 180px;
+    height: 6px;
+    background: rgba(255,255,255,0.10);
+    border-radius: 999px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+.mProg::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    border: 1px solid rgba(0,0,0,0.25);
+}
+.mProg::-moz-range-thumb{
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    border: 1px solid rgba(0,0,0,0.25);
 }
