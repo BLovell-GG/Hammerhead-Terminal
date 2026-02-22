@@ -7,14 +7,12 @@
     const CAMPAIGN_DATE = "21 FEB 2518";
     const STAR_SYSTEM = "UNKNOWN";
     const REQUIRED_PASSWORD = "FR-2521"; // placeholder (can be changed later)
+    const DEFAULT_USERNAME = "CMD_101ST_NOVA";
 
     // Music playlist (ogg). Paths are relative to site root.
     const PLAYLIST = [
-        { name: "INSIGNIFICANTIA", src: "assets/music/halo_wars_insignificantia.ogg" },
-        { name: "SPIRIT OF FIRE", src: "assets/music/halo_wars_spirit_of_fire.ogg" },
-        { name: "ODST // DARKNESS", src: "assets/music/halo3_odst_darkness.ogg" },
-        { name: "ATONEMENT", src: "assets/music/halo4_atonement.ogg" },
-        { name: "IXION // VANIR'S LEGACY", src: "assets/music/ixion_vanirs_legacy.ogg" },
+        { name: "INSIGNIFICANTIA", src: "assets/music/insignificantia.ogg" },
+        { name: "ATONEMENT", src: "assets/music/atonement.ogg" },
     ];
 
     // ---------- DOM ----------
@@ -56,9 +54,6 @@
     const prevTrack = $("#prevTrack");
     const nextTrack = $("#nextTrack");
     const musicVol = $("#musicVol");
-    const musicProgress = $("#musicProgress");
-    const mTimeCur = $("#mTimeCur");
-    const mTimeDur = $("#mTimeDur");
 
     // Time HUD
     const campDate = $("#campDate");
@@ -114,36 +109,11 @@
     let trackIndex = 0;
     let playing = false;
 
-
-    function fmtTime(sec) {
-        if (!isFinite(sec) || sec < 0) return "0:00";
-        const m = Math.floor(sec / 60);
-        const s = Math.floor(sec % 60);
-        return m + ":" + String(s).padStart(2, "0");
-    }
-
-    function syncProgress() {
-        if (!musicProgress) return;
-        const dur = music.duration || 0;
-        const cur = music.currentTime || 0;
-
-        if (mTimeCur) mTimeCur.textContent = fmtTime(cur);
-        if (mTimeDur) mTimeDur.textContent = fmtTime(dur);
-
-        // map 0..dur to 0..1000 to avoid float precision in range
-        const val = dur > 0 ? Math.round((cur / dur) * 1000) : 0;
-        musicProgress.value = String(val);
-    }
-
     function loadTrack(i) {
         trackIndex = (i + PLAYLIST.length) % PLAYLIST.length;
         const t = PLAYLIST[trackIndex];
         music.src = t.src;
         setText(musicTrack, t.name);
-        // reset progress UI until metadata loads
-        if (musicProgress) musicProgress.value = "0";
-        if (mTimeCur) mTimeCur.textContent = "0:00";
-        if (mTimeDur) mTimeDur.textContent = "0:00";
     }
 
     function setMusicVol() {
@@ -188,11 +158,10 @@
         setMusicBtn();
     }
 
-    // If the user is already in PLAY state, ensure we resume once the browser can play.
-    music.addEventListener("canplay", () => {
+    music.addEventListener("ended", () => {
+        loadTrack(trackIndex + 1);
         if (playing) music.play().catch(() => { });
     });
-
 
     prevTrack?.addEventListener("click", () => {
         loadTrack(trackIndex - 1);
@@ -206,26 +175,6 @@
 
     musicToggle?.addEventListener("click", toggleMusic);
     musicVol?.addEventListener("input", () => setMusicVol());
-
-    musicProgress?.addEventListener("input", () => {
-        const dur = music.duration || 0;
-        if (dur <= 0) return;
-        const v = Number(musicProgress.value || 0) / 1000;
-        music.currentTime = v * dur;
-        syncProgress();
-    });
-
-    music.addEventListener("timeupdate", syncProgress);
-    music.addEventListener("loadedmetadata", syncProgress);
-
-    // Auto-advance to next track; loop playlist when finished.
-    music.addEventListener("ended", () => {
-        loadTrack(trackIndex + 1);
-        // keep playing if user had music on
-        if (playing) {
-            music.play().catch(() => { /* ignore */ });
-        }
-    });
 
     // ---------- TELEMETRY ----------
     function drawSpark(canvas, samples) {
@@ -326,6 +275,7 @@
         contracts: "BRIDGE / CONTRACTS",
         factions: "BRIDGE / FACTIONS",
         ship: "BRIDGE / SHIP STATUS",
+        logistics: "BRIDGE / LOGISTICS",
         logs: "BRIDGE / LOGS",
         settings: "BRIDGE / SETTINGS",
         lock: "LOCK TERMINAL",
@@ -396,10 +346,11 @@
         appShell?.classList.remove("hidden");
         loginScreen?.classList.add("hidden");
     }
-
     function lockTerminal() {
         powered = false;
         authed = false;
+
+        closeSidebar();
 
         // reset UI
         authModule?.classList.add("hidden");
@@ -445,6 +396,8 @@
         // Start music only after a user gesture (helps autoplay policies)
         if (PLAYLIST.length) {
             if (!music.src) loadTrack(0);
+            // do not force play; user can hit play — but fade-in on power on feels good
+            fadeInMusic(1100).catch(() => { });
         }
 
         await runPowerBoot();
@@ -457,7 +410,7 @@
         loginBtn.disabled = true;
 
         // fake credential entry (swap for real inputs later)
-        setText(uiUser, "CMD_101ST_NOVA");
+        setText(uiUser, DEFAULT_USERNAME);
         setText(uiPass, "••••••••");
 
         await typeLine("AUTH REQUEST: INITIATED", { delay: 10 });
@@ -482,6 +435,7 @@
 
         // Transition
         showApp();
+        closeSidebar();
         setText(appSub, "FM-FR-2521 • RELAY STATUS: ACTIVE");
         setRoute("map");
     });

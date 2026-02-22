@@ -39,7 +39,7 @@ body {
     color: var(--text);
     background:
         radial-gradient(1200px 800px at 50% 30%, #0b2a3f 0%, var(--bg) 60%, #03070b 100%);
-    overflow: visible;
+    overflow: hidden;
 }
 
 /* ===== subtle animated grid + watermark + scanlines ===== */
@@ -116,7 +116,7 @@ body::after {
     display: grid;
     place-items: center;
     padding: clamp(12px, 3vw, 36px);
-    overflow: visible;
+    overflow: hidden;
 }
 
 /* ===== shared helpers ===== */
@@ -241,7 +241,7 @@ body::after {
     border-radius: 12px;
     background: rgba(0, 0, 0, .14);
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .02);
-    overflow: visible;
+    overflow: hidden;
 }
 
 .authTop {
@@ -355,7 +355,7 @@ body::after {
     border: 1px solid rgba(27, 58, 82, .75);
     border-radius: 12px;
     background: rgba(0, 0, 0, .10);
-    overflow: visible;
+    overflow: hidden;
 }
 
 .termTop {
@@ -478,6 +478,7 @@ body::after {
     display: grid;
     grid-template-rows: auto 1fr;
     gap: 12px;
+    /* Allow the sidebar drawer to render OUTSIDE the terminal frame (left empty space). */
     overflow: visible;
 }
 
@@ -520,7 +521,7 @@ body::after {
     border-radius: 12px;
     background: radial-gradient(900px 500px at 50% 30%, rgba(0, 200, 255, .10), rgba(0, 0, 0, .10));
     position: relative;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .mapPlaceholder {
@@ -604,14 +605,9 @@ body::after {
     right: 18px;
     z-index: 50;
 
-    /* compact */
-    width: min(520px, calc(100vw - 36px));
-    max-width: 520px;
-
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
+    align-items: center;
+    gap: 14px;
 
     padding: 12px 14px;
     border-radius: 12px;
@@ -622,7 +618,7 @@ body::after {
 }
 
 .musicInfo {
-    min-width: 0;
+    min-width: 220px;
 }
 
 .musicLabel {
@@ -634,17 +630,21 @@ body::after {
 }
 
 .musicTrack {
-    max-width: 100%;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    max-width: 260px;
 }
 
 .musicControls {
     display: flex;
     align-items: center;
     gap: 8px;
-    flex-wrap: wrap;
 }
 
 .mBtn {
@@ -668,7 +668,6 @@ body::after {
 
 .mVol {
     width: 120px;
-    margin-left: auto;
 }
 
 .musicHud.playing {
@@ -734,7 +733,7 @@ body::after {
     height: 10px;
     border: 1px solid rgba(110, 180, 255, 0.25);
     border-radius: 999px;
-    overflow: visible;
+    overflow: hidden;
     background: rgba(0, 0, 0, 0.35);
 }
 
@@ -1039,32 +1038,23 @@ body::after {
 /* ===== Sidebar navigation (attached to app frame) ===== */
 .sideNav {
     position: absolute;
-    right: 100%;
-    left: auto;
+    left: 0;
     top: 62px;
-    /* below header */
+    /* just below header line */
     bottom: 0;
     width: 280px;
-
     border-right: 1px solid rgba(0, 200, 255, .18);
     background: linear-gradient(180deg, rgba(11, 28, 42, .86), rgba(6, 17, 27, .92));
-    box-shadow: -14px 0 40px rgba(0, 0, 0, .45);
-
-    /* CLOSED */
-    transform: translateX(100%);
-    opacity: 0;
-    pointer-events: none;
-
-    transition: transform 220ms ease, opacity 140ms ease;
-    z-index: 40;
+    box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
+    transform: translateX(-100%);
+    transition: transform 220ms ease;
+    z-index: 20;
     display: flex;
     flex-direction: column;
 }
 
 .sideNav.open {
     transform: translateX(0);
-    opacity: 1;
-    pointer-events: auto;
 }
 
 .sideHdr {
@@ -1146,8 +1136,7 @@ body::after {
 
 /* When sidebar is open, shift appBody content so it feels connected (optional) */
 .app.hasSidebar .appBody {
-    padding-left: 0;
-    /* was 280px; sidebar is overlay */
+    padding-left: 280px;
     transition: padding-left 220ms ease;
 }
 
@@ -1169,6 +1158,97 @@ body::after {
     }
 }
 
+/* ==========================================================
+   Sidebar drawer behavior (FINAL override)
+   - CLOSED: hidden (no dim)
+   - OPEN: slides out into the empty space LEFT of the terminal
+   - Dimmer only appears when OPEN
+   These rules intentionally override earlier sidebar styles.
+   ========================================================== */
+
+/* Allow the drawer to render outside the terminal frame */
+.app {
+    overflow: visible;
+}
+
+/* Drawer lives just OUTSIDE the terminal's left edge */
+.sideNav {
+    left: auto !important;
+    right: 100% !important;
+    top: 62px !important;
+    bottom: 0 !important;
+    width: 280px !important;
+
+    /* CLOSED = tucked behind edge + invisible */
+    transform: translateX(100%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+
+    transition: transform 220ms ease, opacity 140ms ease !important;
+    z-index: 30 !important;
+}
+
+.sideNav.open {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Dimmer should ONLY appear when the menu is OPEN */
+.sideOverlay {
+    inset: 0 !important;
+    z-index: 25 !important;
+}
+
+/* Sidebar is outside, so never shift content */
+.app.hasSidebar .appBody {
+    padding-left: 0 !important;
+}
+
+/* Dock button stays attached to the drawer edge */
+.menuDock {
+    z-index: 35;
+}
+
+.menuDock.open {
+    transform: translateY(-50%) translateX(-280px);
+}
+
+/* Arrow direction:
+   - CLOSED: points RIGHT (indicates "open")
+   - OPEN: points LEFT  (indicates "close") */
+.menuArrow::before {
+    transform: rotate(-135deg);
+}
+
+.menuArrow.open::before {
+    transform: rotate(45deg);
+}
+
+/* On narrower layouts there may be no "empty space" to the left of the terminal.
+   In that case, fall back to an in-panel drawer so NAV is always reachable. */
+@media (max-width: 1180px) {
+    .sideNav {
+        right: auto;
+        left: 0;
+        box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
+        /* closed: off-canvas to the left */
+        transform: translateX(-100%);
+        opacity: 1;
+        pointer-events: none;
+    }
+
+    .sideNav.open {
+        transform: translateX(0);
+        pointer-events: auto;
+    }
+
+    /* Keep the dock button from flying off-screen on small widths */
+    .menuDock.open {
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
 /* ===== Panel-docked menu arrow ===== */
 .app {
     position: relative;
@@ -1177,7 +1257,7 @@ body::after {
 
 .menuDock {
     position: absolute;
-    left: -17px;
+    left: -14px;
     /* sticks out of the panel edge */
     top: 50%;
     transform: translateY(-50%);
@@ -1196,15 +1276,13 @@ body::after {
 }
 
 .menuArrow {
-    /* arrow only (no extra circular button) */
-    width: 100%;
-    height: 100%;
-    display: block;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(6, 17, 27, 0.55);
     position: relative;
-    border: none;
-    background: transparent;
-    border-radius: 0;
-    pointer-events: none;
+    cursor: pointer;
 }
 
 /* draw the arrow */
@@ -1226,198 +1304,4 @@ body::after {
 .menuArrow.open::before {
     transform: rotate(-135deg);
     /* points RIGHT */
-}
-
-/* ===== Views: show only active route ===== */
-.view {
-    display: none;
-    height: 100%;
-}
-
-.view.active {
-    display: block;
-    height: 100%;
-}
-
-/* ===== Menu dock (button half outside panel edge) ===== */
-.menuDock {
-    position: absolute;
-    left: -18px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 36px;
-    height: 56px;
-    border-radius: 14px;
-    border: 1px solid var(--line);
-    background: rgba(6, 17, 27, .72);
-    box-shadow: 0 0 0 1px rgba(0, 200, 255, .06);
-    cursor: pointer;
-    z-index: 60;
-    display: grid;
-    place-items: center;
-    padding: 0;
-}
-
-.menuDock:hover {
-    border-color: rgba(0, 200, 255, .40);
-}
-
-.menuDock .menuArrow {
-    width: 44px;
-    height: 44px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgba(6, 17, 27, .55);
-    position: relative;
-    display: block;
-}
-
-.menuDock .menuArrow::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 10px;
-    height: 10px;
-    border-right: 2px solid rgba(70, 227, 255, .95);
-    border-bottom: 2px solid rgba(70, 227, 255, .95);
-    transform: rotate(135deg);
-}
-
-.menuDock.open {
-    transform: translateY(-50%) translateX(-280px);
-}
-
-.menuDock.open .menuArrow::before {
-    transform: rotate(-45deg);
-}
-
-/* Optional tiny grab-handle dots (enabled when .menuDock has .grab) */
-.menuDock.grab::after {
-    content: "";
-    position: absolute;
-    left: 6px;
-    width: 3px;
-    height: 3px;
-    border-radius: 99px;
-    background: rgba(0, 200, 255, .55);
-    top: 50%;
-    transform: translateY(-50%);
-    box-shadow: 0 -8px 0 rgba(0, 200, 255, .45), 0 8px 0 rgba(0, 200, 255, .45);
-    opacity: .9;
-}
-
-/* ===== Music HUD progress ===== */
-.mProgWrap {
-    flex: 1 1 100%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.mTime {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 12px;
-    color: var(--muted);
-    min-width: 44px;
-    text-align: center;
-}
-
-.mProg {
-    flex: 1 1 auto;
-    width: auto;
-    min-width: 140px;
-}
-
-.mProg::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 12px;
-    height: 12px;
-    border-radius: 999px;
-    background: var(--accent);
-    border: 1px solid rgba(0, 0, 0, 0.25);
-}
-
-.mProg::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
-    border-radius: 999px;
-    background: var(--accent);
-    border: 1px solid rgba(0, 0, 0, 0.25);
-}
-
-
-/* ===== FIX: menu dock + sidebar visibility (single handle, no duplicate button) ===== */
-.app {
-    overflow: visible;
-}
-
-/* Ensure sidebar can render outside the panel */
-.sideNav {
-    z-index: 55;
-}
-
-.sideOverlay {
-    z-index: 54;
-}
-
-/* Force a single, clean dock button (prevents duplicate circular handle styles) */
-.menuDock {
-    display: block;
-    padding: 0;
-    /* keep it glued to the panel edge */
-    left: -18px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 36px;
-    height: 56px;
-    border-radius: 14px;
-    z-index: 60;
-}
-
-.menuDock.open {
-    /* do NOT translate sideways when open */
-    transform: translateY(-50%);
-}
-
-/* Arrow fills the dock — no extra circle */
-.menuDock .menuArrow {
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: 0;
-    background: transparent;
-    display: block;
-    position: relative;
-    pointer-events: none;
-}
-
-/* Draw arrow (closed points LEFT) */
-.menuDock .menuArrow::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 10px;
-    height: 10px;
-    border-left: 2px solid var(--accent);
-    border-bottom: 2px solid var(--accent);
-    transform: rotate(45deg);
-    opacity: .9;
-}
-
-/* When open, point RIGHT */
-.menuDock.open .menuArrow::before {
-    transform: rotate(-135deg);
-}
-
-
-
-/* ===== FIX: Sidebar should NOT shrink/shift the main content =====
-   The sidebar is an overlay that lives outside the left edge of the app frame.
-   Keeping appBody unshifted prevents the map area from shrinking when the nav opens.
-*/
-.app.hasSidebar .appBody {
-    padding-left: 0 !important;
 }
