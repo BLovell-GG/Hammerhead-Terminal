@@ -278,7 +278,7 @@
         logistics: "BRIDGE / LOGISTICS",
         logs: "BRIDGE / LOGS",
         settings: "BRIDGE / SETTINGS",
-        lock: "LOCK TERMINAL",
+        lock: "SIGN OUT",
     };
 
     function setRoute(route) {

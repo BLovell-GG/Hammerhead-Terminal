@@ -132,14 +132,15 @@
                     <button class="sideClose" id="sideClose" type="button" aria-label="Close navigation">✕</button>
                 </div>
                 <div class="sideBtns">
-                    <button class="sideBtn active" data-route="map">SYSTEM</button>
+                    <button class="sideBtn active" data-route="map">SYSTEM MAP</button>
                     <button class="sideBtn" data-route="contracts">CONTRACTS</button>
                     <button class="sideBtn" data-route="factions">FACTIONS</button>
                     <button class="sideBtn" data-route="ship">SHIP</button>
+                    <button class="sideBtn" data-route="LOGISTICS">LOGISTICS</button>
                     <div class="sideSep"></div>
                     <button class="sideBtn" data-route="logs">LOGS</button>
                     <button class="sideBtn" data-route="settings">SETTINGS</button>
-                    <button class="sideBtn" data-route="lock">LOCK TERMINAL</button>
+                    <button class="sideBtn" data-route="lock">SIGN OUT</button>
                 </div>
             </aside>
             <div class="sideOverlay" id="sideOverlay" aria-hidden="true"></div>
@@ -173,6 +174,68 @@
                         <div class="mapPlaceholder">
                             <div class="mapBig">SHIP STATUS</div>
                             <div class="mapSmall">Placeholder: hull integrity + modules + crew + cargo.</div>
+                        </div>
+                    </section>
+
+                    <section class="view" data-view="logistics">
+                        <div class="grid cols-2">
+
+                            <div class="card">
+                                <h3>RESOURCE STOCKPILE</h3>
+                                <table class="table">
+                                    <tr>
+                                        <th>RESOURCE</th>
+                                        <th>AMOUNT</th>
+                                    </tr>
+                                    <tr>
+                                        <td>SUPPLIES</td>
+                                        <td>120</td>
+                                    </tr>
+                                    <tr>
+                                        <td>COMPONENTS</td>
+                                        <td>45</td>
+                                    </tr>
+                                    <tr>
+                                        <td>FUEL CELLS</td>
+                                        <td>18</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="card">
+                                <h3>SHIP POWER GRID</h3>
+                                <table class="table">
+                                    <tr>
+                                        <th>REACTOR OUTPUT</th>
+                                        <th>STATUS</th>
+                                    </tr>
+                                    <tr>
+                                        <td>20 MW</td>
+                                        <td><span class="badge">DAMAGED</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>POWER USED</td>
+                                        <td>8 MW</td>
+                                    </tr>
+                                    <tr>
+                                        <td>AVAILABLE</td>
+                                        <td>12 MW</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="card" style="margin-top:14px;">
+                            <h3>INSTALLABLE MODULE SLOTS</h3>
+                            <div class="grid cols-3">
+                                <div class="badge">BRIDGE CORE (LOCKED)</div>
+                                <div class="badge">FORWARD ARRAY SLOT</div>
+                                <div class="badge">THRUSTER BAY SLOT</div>
+                                <div class="badge">CARGO MODULE SLOT</div>
+                                <div class="badge">UTILITY MODULE SLOT</div>
+                                <div class="badge">EMPTY</div>
+                            </div>
                         </div>
                     </section>
 
