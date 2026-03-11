@@ -67,6 +67,11 @@
     const sideBtns = Array.from(document.querySelectorAll(".sideBtn"));
     const views = Array.from(document.querySelectorAll(".view[data-view]"));
 
+    const nodeDrawer = document.getElementById("nodeDrawer");
+    const nodeDrawerClose = document.getElementById("nodeDrawerClose");
+    const nodeSelection = document.getElementById("nodeSelection");
+    const nodeDetails = document.getElementById("nodeDetails");
+
     const appTitle = $("#appTitle");
     const appSub = $("#appSub");
 
@@ -463,6 +468,32 @@
             closeSidebar();
         });
     });
+
+    // ---------- Node Draw -----------
+    function openNav() {
+        sideNav.classList.add("open");
+    }
+
+    function closeNav() {
+        sideNav.classList.remove("open");
+    }
+
+    function openNodeDrawer(title, details) {
+        if (!nodeDrawer) return;
+
+        nodeSelection.textContent = title;
+        nodeDetails.textContent = details;
+
+        nodeDrawer.classList.add("open");
+    }
+
+    function closeNodeDrawer() {
+        if (!nodeDrawer) return;
+        nodeDrawer.classList.remove("open");
+    }
+
+    nodeDrawerClose?.addEventListener("click", closeNodeDrawer);
+
 
     // ---------- FLOW: POWER ON → LOGIN → APP ----------
     let powered = false;

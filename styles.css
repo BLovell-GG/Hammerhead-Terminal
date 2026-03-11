@@ -1025,6 +1025,7 @@ body::after {
 .menuArrow {
     width: 44px;
     height: 44px;
+    transform: rotate(180deg);
     border-radius: 999px;
     border: 1px solid var(--line);
     background: rgba(6, 17, 27, 0.55);
@@ -1567,4 +1568,46 @@ body::after {
         right: 12px;
         bottom: 12px;
     }
+}
+
+/* ==========================================================
+   NODE DRAW
+   ========================================================== */
+
+.nodeDrawer {
+    position: fixed;
+    right: -360px;
+    top: 0;
+    height: 100%;
+    width: 360px;
+
+    background: rgba(3, 18, 32, .98);
+    border-left: 1px solid rgba(27, 58, 82, .8);
+
+    display: flex;
+    flex-direction: column;
+
+    transition: right .35s ease;
+    z-index: 900;
+}
+
+.nodeDrawer.open {
+    right: 0;
+}
+
+.nodeDrawerHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(27, 58, 82, .8);
+
+    font-size: 13px;
+    letter-spacing: .14em;
+}
+
+.nodeDrawerContent {
+    padding: 16px;
+    overflow-y: auto;
 }
