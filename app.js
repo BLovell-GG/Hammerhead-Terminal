@@ -495,6 +495,14 @@
     nodeDrawerClose?.addEventListener("click", closeNodeDrawer);
 
 
+    document.querySelector(".mapPane")?.addEventListener("click", () => {
+        openNodeDrawer(
+            "SYSTEM NODE",
+            "Tactical node detected. Awaiting further interaction."
+        );
+    });
+
+
     // ---------- FLOW: POWER ON → LOGIN → APP ----------
     let powered = false;
     let authed = false;
