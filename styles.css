@@ -845,8 +845,14 @@ body::after {
 }
 
 .view {
+    display: none;
     padding: 18px;
     overflow: auto;
+    height: 100%;
+}
+
+.view.active {
+    display: block;
 }
 
 /* Shared UI blocks */
