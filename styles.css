@@ -769,6 +769,7 @@ body::after {
     flex-direction: column;
     height: 100%;
     min-height: 0;
+    flex: 1;
 }
 
 /* Shared UI blocks */
@@ -1036,7 +1037,7 @@ body::after {
 }
 
 .menuDock.open {
-    transform: translateY(-50%) translateX(-280px);
+    transform: translateX(-280px);
 }
 
 /* Arrow direction:
@@ -1142,6 +1143,7 @@ body::after {
 
 .mapPane {
     min-height: 0;
+    height: 100%;
     display: flex;
     flex-direction: column;
     border: 1px solid rgba(27, 58, 82, .8);
@@ -1350,8 +1352,8 @@ body::after {
 .menuDock {
     position: absolute;
     left: -14px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 76px;
+    transform: none;
     width: 34px;
     height: 54px;
     border-radius: 12px;
