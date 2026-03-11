@@ -252,18 +252,25 @@
                         </div>
                     </section>
                 </div>
+            </div>
 
-                <aside class="infoPane">
-                    <div class="infoHeader">NODE DATA</div>
+            <div id="nodeDrawer" class="nodeDrawer">
+                <div class="nodeDrawerHeader">
+                    <span>NODE DATA</span>
+                    <button id="nodeDrawerClose">✕</button>
+                </div>
+
+                <div class="nodeDrawerContent">
                     <div class="infoBlock">
-                        <div class="infoKey">Selection</div>
-                        <div class="infoVal" id="nodeSelection">None</div>
+                        <div class="infoLabel">SELECTION</div>
+                        <div id="nodeSelection">None</div>
                     </div>
+
                     <div class="infoBlock">
-                        <div class="infoKey">Hint</div>
-                        <div class="infoVal" id="nodeHint">Click a planet to view regions & contracts.</div>
+                        <div class="infoLabel">DETAILS</div>
+                        <div id="nodeDetails">Awaiting selection...</div>
                     </div>
-                </aside>
+                </div>
             </div>
 
         </section>
@@ -304,25 +311,6 @@
         <div class="timeRow"><span class="dim">DATE</span>: <span id="campDate">21 FEB 2518</span></div>
         <div class="timeRow"><span class="dim">SHIPBOARD TIME</span>: <span id="shipTime">--:--:--</span></div>
         <div class="timeRow"><span class="dim">STAR SYSTEM</span>: <span id="starSystem">UNKNOWN</span></div>
-    </div>
-
-    <div id="nodeDrawer" class="nodeDrawer">
-        <div class="nodeDrawerHeader">
-            <span>NODE DATA</span>
-            <button id="nodeDrawerClose">✕</button>
-        </div>
-
-        <div class="nodeDrawerContent">
-            <div class="infoBlock">
-                <div class="infoLabel">SELECTION</div>
-                <div id="nodeSelection">None</div>
-            </div>
-
-            <div class="infoBlock">
-                <div class="infoLabel">DETAILS</div>
-                <div id="nodeDetails">Awaiting selection...</div>
-            </div>
-        </div>
     </div>
 
     <script src="app.js"></script>
