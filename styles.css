@@ -1136,9 +1136,11 @@ body::after {
 
 .appBody {
     display: grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: 1fr;
     gap: 14px;
     min-height: 0;
+    height: 100%;
+    align-items: stretch;
 }
 
 .mapPane {
@@ -1166,6 +1168,7 @@ body::after {
     flex-direction: column;
     height: 100%;
     min-height: 0;
+    flex: 1;
 }
 
 .mapPlaceholder {
@@ -1593,7 +1596,7 @@ body::after {
     flex-direction: column;
 
     box-shadow: 18px 0 40px rgba(0, 0, 0, .45);
-    transform: translateX(0);
+    transform: translateX(24px);
     opacity: 0;
     pointer-events: none;
 
@@ -1603,6 +1606,7 @@ body::after {
 }
 
 .nodeDrawer.open {
+    transform: translateX(0);
     opacity: 1;
     pointer-events: auto;
 }
