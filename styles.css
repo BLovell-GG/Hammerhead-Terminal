@@ -1157,18 +1157,16 @@ body::after {
 
 .view {
     display: none;
-    padding: 18px;
-    overflow: auto;
-    height: 100%;
+    flex: 1 1 auto;
     min-height: 0;
+    padding: 18px;
 }
 
 .view.active {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex: 1 1 auto;
     min-height: 0;
-    flex: 1;
 }
 
 .mapPlaceholder {
