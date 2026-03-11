@@ -122,7 +122,6 @@
             </div>
 
             <button id="menuBtn" class="menuDock menuArrow" aria-label="Open navigation" aria-expanded="false"></button>
-            </button>
 
 
             <!-- Slide-out sidebar navigation -->
@@ -136,7 +135,7 @@
                     <button class="sideBtn" data-route="contracts">CONTRACTS</button>
                     <button class="sideBtn" data-route="factions">FACTIONS</button>
                     <button class="sideBtn" data-route="ship">SHIP</button>
-                    <button class="sideBtn" data-route="LOGISTICS">LOGISTICS</button>
+                    <button class="sideBtn" data-route="logistics">LOGISTICS</button>
                     <div class="sideSep"></div>
                     <button class="sideBtn" data-route="logs">LOGS</button>
                     <button class="sideBtn" data-route="settings">SETTINGS</button>
@@ -276,12 +275,26 @@
         <div class="musicInfo">
             <div class="musicLabel">BATTLE NET AUDIO</div>
             <div class="musicTrack" id="musicTrack">NO SIGNAL</div>
+            <div class="musicArtist" id="musicArtist">—</div>
+            <div class="musicAlbum" id="musicAlbum">—</div>
+        </div>
+
+        <div class="musicProgressWrap">
+            <div class="musicTimes">
+                <span id="musicCurrent">0:00</span>
+                <span id="musicDuration">0:00</span>
+            </div>
+            <div class="musicProgress">
+                <div class="musicProgressBar" id="musicProgressBar"></div>
+            </div>
         </div>
 
         <div class="musicControls">
-            <button class="mBtn" id="prevTrack" type="button">◀</button>
-            <button class="mBtn" id="musicToggle" type="button">PLAY</button>
-            <button class="mBtn" id="nextTrack" type="button">▶</button>
+            <div class="musicControlGroup">
+                <button class="mBtn" id="prevTrack" type="button">◀</button>
+                <button class="mBtn" id="musicToggle" type="button">PLAY</button>
+                <button class="mBtn" id="nextTrack" type="button">▶</button>
+            </div>
             <input class="mVol" id="musicVol" type="range" min="0" max="100" value="35" />
         </div>
     </div>

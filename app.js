@@ -11,8 +11,36 @@
 
     // Music playlist (ogg). Paths are relative to site root.
     const PLAYLIST = [
-        { name: "INSIGNIFICANTIA", src: "assets/music/insignificantia.ogg" },
-        { name: "ATONEMENT", src: "assets/music/atonement.ogg" },
+        {
+            name: "INSIGNIFICANTIA",
+            artist: "Stephen Rippy",
+            album: "BATTLE NET AUDIO",
+            src: "assets/music/halo_wars_insignificantia.ogg"
+        },
+        {
+            name: "ATONEMENT",
+            artist: "Kazuma Jinnouchi",
+            album: "BATTLE NET AUDIO",
+            src: "assets/music/halo4_atonement.ogg"
+        },
+        {
+            name: "SPIRIT OF FIRE",
+            artist: "Stephen Rippy",
+            album: "BATTLE NET AUDIO",
+            src: "assets/music/halo_wars_spirit_of_fire.ogg"
+        },
+        {
+            name: "DEFERENCE OF DARKNESS",
+            artist: "Martin O'Donnell, Michael Salvatori",
+            album: "BATTLE NET AUDIO",
+            src: "assets/music/halo3_odst_darkness.ogg"
+        },
+        {
+            name: "VANIRS LEGACY",
+            artist: "Guillaume David",
+            album: "BATTLE NET AUDIO",
+            src: "assets/music/ixion_vanirs_legacy.ogg"
+        },
     ];
 
     // ---------- DOM ----------
@@ -50,6 +78,13 @@
 
     // Music HUD
     const musicTrack = $("#musicTrack");
+    const musicArtist = $("#musicArtist");
+    const musicAlbum = $("#musicAlbum");
+    const musicCurrent = $("#musicCurrent");
+    const musicDuration = $("#musicDuration");
+    const musicProgressBar = $("#musicProgressBar");
+    const musicHud = $("#musicHud");
+
     const musicToggle = $("#musicToggle");
     const prevTrack = $("#prevTrack");
     const nextTrack = $("#nextTrack");
@@ -109,11 +144,45 @@
     let trackIndex = 0;
     let playing = false;
 
+    function formatTime(seconds) {
+        if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${String(secs).padStart(2, "0")}`;
+    }
+
+    function updateMusicMeta() {
+        const t = PLAYLIST[trackIndex];
+        if (!t) return;
+
+        setText(musicTrack, t.name ?? "NO SIGNAL");
+        setText(musicArtist, t.artist ?? "—");
+        setText(musicAlbum, t.album ?? "—");
+    }
+
+    function updateMusicProgress() {
+        const current = Number.isFinite(music.currentTime) ? music.currentTime : 0;
+        const duration = Number.isFinite(music.duration) ? music.duration : 0;
+        const pct = duration > 0 ? (current / duration) * 100 : 0;
+
+        setText(musicCurrent, formatTime(current));
+        setText(musicDuration, formatTime(duration));
+        if (musicProgressBar) {
+            musicProgressBar.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+        }
+    }
+
+    function setMusicHudState() {
+        if (!musicHud) return;
+        musicHud.classList.toggle("playing", playing);
+    }
+
     function loadTrack(i) {
         trackIndex = (i + PLAYLIST.length) % PLAYLIST.length;
         const t = PLAYLIST[trackIndex];
         music.src = t.src;
-        setText(musicTrack, t.name);
+        updateMusicMeta();
+        updateMusicProgress();
     }
 
     function setMusicVol() {
@@ -124,15 +193,30 @@
     function setMusicBtn() {
         if (!musicToggle) return;
         musicToggle.textContent = playing ? "PAUSE" : "PLAY";
+        setMusicHudState();
     }
 
     async function fadeInMusic(ms = 900) {
         if (!PLAYLIST.length) return;
+        if (!music.src) loadTrack(0);
+
         setMusicVol();
         const target = music.volume;
         music.volume = 0;
-        try { await music.play(); playing = true; } catch { /* autoplay restrictions */ }
+
+        try {
+            await music.play();
+            playing = true;
+        } catch {
+            playing = false;
+        }
+
         setMusicBtn();
+
+        if (!playing) {
+            music.volume = target;
+            return;
+        }
 
         const steps = 30;
         for (let s = 1; s <= steps; s++) {
@@ -143,38 +227,84 @@
 
     function toggleMusic() {
         if (!PLAYLIST.length) return;
-        if (music.src === "") loadTrack(0);
+        if (!music.src) loadTrack(0);
 
         if (playing) {
             music.pause();
             playing = false;
-        } else {
-            music.play().then(() => {
-                playing = true;
-                setMusicVol();
-                setMusicBtn();
-            }).catch(() => { });
+            setMusicBtn();
+            return;
         }
-        setMusicBtn();
+
+        music.play().then(() => {
+            playing = true;
+            setMusicVol();
+            setMusicBtn();
+        }).catch(() => {
+            playing = false;
+            setMusicBtn();
+        });
     }
+
+    music.addEventListener("loadedmetadata", updateMusicProgress);
+    music.addEventListener("timeupdate", updateMusicProgress);
+    music.addEventListener("play", () => {
+        playing = true;
+        setMusicBtn();
+    });
+    music.addEventListener("pause", () => {
+        playing = false;
+        setMusicBtn();
+    });
 
     music.addEventListener("ended", () => {
         loadTrack(trackIndex + 1);
-        if (playing) music.play().catch(() => { });
+        music.play().then(() => {
+            playing = true;
+            setMusicBtn();
+        }).catch(() => {
+            playing = false;
+            setMusicBtn();
+        });
     });
 
     prevTrack?.addEventListener("click", () => {
+        const shouldResume = playing;
         loadTrack(trackIndex - 1);
-        if (playing) music.play().catch(() => { });
+        if (shouldResume) {
+            music.play().then(() => {
+                playing = true;
+                setMusicBtn();
+            }).catch(() => {
+                playing = false;
+                setMusicBtn();
+            });
+        }
     });
 
     nextTrack?.addEventListener("click", () => {
+        const shouldResume = playing;
         loadTrack(trackIndex + 1);
-        if (playing) music.play().catch(() => { });
+        if (shouldResume) {
+            music.play().then(() => {
+                playing = true;
+                setMusicBtn();
+            }).catch(() => {
+                playing = false;
+                setMusicBtn();
+            });
+        }
     });
 
     musicToggle?.addEventListener("click", toggleMusic);
-    musicVol?.addEventListener("input", () => setMusicVol());
+    musicVol?.addEventListener("input", setMusicVol);
+
+    // initialize HUD state
+    if (PLAYLIST.length) {
+        loadTrack(0);
+        setMusicVol();
+        setMusicBtn();
+    }
 
     // ---------- TELEMETRY ----------
     function drawSpark(canvas, samples) {

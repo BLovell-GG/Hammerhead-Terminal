@@ -12,6 +12,7 @@
     --accent-a08: color-mix(in srgb, var(--accent) 8%, transparent);
     --accent-a10: color-mix(in srgb, var(--accent) 10%, transparent);
     --accent-a12: color-mix(in srgb, var(--accent) 12%, transparent);
+    --accent-a14: color-mix(in srgb, var(--accent) 14%, transparent);
     --accent-a16: color-mix(in srgb, var(--accent) 16%, transparent);
     --accent-a18: color-mix(in srgb, var(--accent) 18%, transparent);
     --accent-a20: color-mix(in srgb, var(--accent) 20%, transparent);
@@ -516,7 +517,8 @@ body::after {
 
 .mapPane {
     min-height: 0;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     border: 1px solid rgba(27, 58, 82, .8);
     border-radius: 12px;
     background: radial-gradient(900px 500px at 50% 30%, rgba(0, 200, 255, .10), rgba(0, 0, 0, .10));
@@ -525,15 +527,15 @@ body::after {
 }
 
 .mapPlaceholder {
-    position: absolute;
-    inset: 0;
     display: flex;
-    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     gap: 10px;
-    min-height: 0;
-    height: 100%;
 }
 
 .mapBig {
@@ -752,107 +754,19 @@ body::after {
     text-transform: uppercase;
 }
 
-/* APP SHELL */
-.app-shell {
-    position: fixed;
-    inset: 0;
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    background: rgba(0, 0, 0, 0.88);
-    z-index: 10;
-}
-
-.side-nav {
-    border-right: 1px solid rgba(110, 180, 255, 0.18);
-    padding: 18px 16px;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 18px;
-}
-
-.brand-title {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(110, 180, 255, 0.95);
-    font-size: 14px;
-}
-
-.brand-sub {
-    margin-top: 6px;
-    font-size: 12px;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-}
-
-.nav {
-    display: grid;
-    gap: 10px;
-}
-
-.nav-item {
-    border: 1px solid rgba(110, 180, 255, 0.18);
-    background: rgba(10, 20, 16, 0.55);
-    color: rgba(215, 255, 240, 0.92);
-    padding: 12px;
-    border-radius: 10px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    cursor: pointer;
-}
-
-.nav-item.active {
-    border-color: rgba(110, 180, 255, 0.45);
-    box-shadow: 0 0 0 1px rgba(110, 180, 255, 0.12);
-}
-
-.main {
-    display: grid;
-    grid-template-rows: auto 1fr;
-}
-
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(110, 180, 255, 0.18);
-    padding: 16px 18px;
-}
-
-.view-title {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(110, 180, 255, 0.95);
-}
-
-.topbar-right {
-    display: flex;
-    gap: 10px;
-}
-
-.chip {
-    border: 1px solid rgba(110, 180, 255, 0.18);
-    background: rgba(10, 20, 16, 0.45);
-    padding: 8px 10px;
-    border-radius: 999px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 12px;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: rgba(215, 255, 240, 0.9);
-}
-
 .view {
     display: none;
     padding: 18px;
     overflow: auto;
     height: 100%;
+    min-height: 0;
 }
 
 .view.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
 }
 
 /* Shared UI blocks */
@@ -894,7 +808,7 @@ body::after {
 
 .table th,
 .table td {
-    border-bottom: 1px solid var(--accent-a14);
+    border-bottom: 1px solid var(--accent-a16);
     padding: 10px 8px;
     text-align: left;
     color: rgba(215, 255, 240, 0.92);
@@ -1023,129 +937,6 @@ body::after {
     background: rgba(0, 0, 0, .18);
 }
 
-/* ===== MENU button (opens sidebar) ===== */
-.menuBtn {
-    border: 1px solid rgba(0, 200, 255, .28);
-    background: rgba(0, 200, 255, .10);
-    color: var(--text);
-    padding: 8px 14px;
-    border-radius: 999px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    font-weight: 900;
-    cursor: pointer;
-    font-size: 11px;
-}
-
-.menuBtn:hover {
-    box-shadow: 0 0 0 1px rgba(0, 200, 255, .18);
-}
-
-/* ===== Sidebar navigation (attached to app frame) ===== */
-.sideNav {
-    position: absolute;
-    left: 0;
-    top: 62px;
-    /* just below header line */
-    bottom: 0;
-    width: 280px;
-    border-right: 1px solid rgba(0, 200, 255, .18);
-    background: linear-gradient(180deg, rgba(11, 28, 42, .86), rgba(6, 17, 27, .92));
-    box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
-    transform: translateX(-100%);
-    transition: transform 220ms ease;
-    z-index: 20;
-    display: flex;
-    flex-direction: column;
-}
-
-.sideNav.open {
-    transform: translateX(0);
-}
-
-.sideHdr {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 14px 12px;
-    border-bottom: 1px solid rgba(27, 58, 82, .8);
-}
-
-.sideTitle {
-    font-weight: 900;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-}
-
-.sideClose {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    border: 1px solid rgba(0, 200, 255, .22);
-    background: rgba(0, 200, 255, .08);
-    color: var(--text);
-    cursor: pointer;
-}
-
-.sideBtns {
-    padding: 14px;
-    display: grid;
-    gap: 10px;
-    overflow: auto;
-}
-
-.sideBtn {
-    width: 100%;
-    text-align: left;
-    border: 1px solid rgba(0, 200, 255, .18);
-    background: rgba(0, 0, 0, .18);
-    color: var(--text);
-    padding: 12px 12px;
-    border-radius: 12px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    font-weight: 900;
-    cursor: pointer;
-    font-size: 11px;
-}
-
-.sideBtn:hover {
-    box-shadow: 0 0 0 1px rgba(0, 200, 255, .14);
-}
-
-.sideBtn.active {
-    border-color: rgba(0, 200, 255, .45);
-    background: rgba(0, 200, 255, .10);
-}
-
-.sideSep {
-    height: 1px;
-    background: rgba(27, 58, 82, .8);
-    margin: 6px 0;
-}
-
-/* darken content behind sidebar when open */
-.sideOverlay {
-    position: absolute;
-    inset: 62px 0 0 0;
-    background: rgba(0, 0, 0, .35);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 180ms ease;
-    z-index: 15;
-}
-
-.sideOverlay.open {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* When sidebar is open, shift appBody content so it feels connected (optional) */
-.app.hasSidebar .appBody {
-    padding-left: 280px;
-    transition: padding-left 220ms ease;
-}
-
 @media (max-width: 980px) {
     .telemetry {
         display: none;
@@ -1213,58 +1004,8 @@ body::after {
 
 /* Dock button stays attached to the drawer edge */
 .menuDock {
-    z-index: 35;
-}
-
-.menuDock.open {
-    transform: translateY(-50%) translateX(-280px);
-}
-
-/* Arrow direction:
-   - CLOSED: points RIGHT (indicates "open")
-   - OPEN: points LEFT  (indicates "close") */
-.menuArrow::before {
-    transform: rotate(-135deg);
-}
-
-.menuArrow.open::before {
-    transform: rotate(45deg);
-}
-
-/* On narrower layouts there may be no "empty space" to the left of the terminal.
-   In that case, fall back to an in-panel drawer so NAV is always reachable. */
-@media (max-width: 1180px) {
-    .sideNav {
-        right: auto;
-        left: 0;
-        box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
-        /* closed: off-canvas to the left */
-        transform: translateX(-100%);
-        opacity: 1;
-        pointer-events: none;
-    }
-
-    .sideNav.open {
-        transform: translateX(0);
-        pointer-events: auto;
-    }
-
-    /* Keep the dock button from flying off-screen on small widths */
-    .menuDock.open {
-        transform: translateY(-50%) translateX(0);
-    }
-}
-
-/* ===== Panel-docked menu arrow ===== */
-.app {
-    position: relative;
-    /* needed so the dock can align to the panel */
-}
-
-.menuDock {
     position: absolute;
     left: -14px;
-    /* sticks out of the panel edge */
     top: 50%;
     transform: translateY(-50%);
     width: 34px;
@@ -1291,7 +1032,12 @@ body::after {
     cursor: pointer;
 }
 
-/* draw the arrow */
+.menuDock.open {
+    transform: translateY(-50%) translateX(-280px);
+}
+
+/* Arrow direction:
+   - CLOSED: points RIGHT (indicates "open")*/
 .menuArrow::before {
     content: "";
     position: absolute;
@@ -1301,13 +1047,524 @@ body::after {
     height: 10px;
     border-left: 2px solid var(--accent);
     border-bottom: 2px solid var(--accent);
-    transform: rotate(45deg);
-    /* points LEFT */
+    transform: rotate(-135deg);
     opacity: 0.9;
 }
 
-/* when open, flip to point RIGHT */
 .menuArrow.open::before {
+    transform: rotate(45deg);
+}
+
+.app.hasSidebar .menuDock {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* On narrower layouts there may be no "empty space" to the left of the terminal.
+   In that case, fall back to an in-panel drawer so NAV is always reachable. */
+@media (max-width: 1180px) {
+    .sideNav {
+        right: auto;
+        left: 0;
+        box-shadow: 14px 0 40px rgba(0, 0, 0, .45);
+        /* closed: off-canvas to the left */
+        transform: translateX(-100%);
+        opacity: 1;
+        pointer-events: none;
+    }
+
+    .sideNav.open {
+        transform: translateX(0);
+        pointer-events: auto;
+    }
+
+    /* Keep the dock button from flying off-screen on small widths */
+    .menuDock.open {
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+/* ==========================================================
+   TERMINAL APP LAYOUT // CLEANED
+   ========================================================== */
+
+.app {
+    position: relative;
+    width: min(1180px, calc(100vw - 72px));
+    height: min(760px, calc(100svh - 72px));
+    border: 1px solid rgba(0, 200, 255, .18);
+    background: linear-gradient(180deg, rgba(11, 28, 42, .92), rgba(6, 17, 27, .92));
+    box-shadow:
+        0 0 0 1px rgba(0, 200, 255, .08),
+        0 24px 90px rgba(0, 0, 0, .60);
+    border-radius: 12px;
+    padding: 18px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 12px;
+    overflow: visible;
+}
+
+.app.hidden {
+    display: none;
+}
+
+.appTop {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(27, 58, 82, .8);
+    padding-bottom: 12px;
+}
+
+.appTitle {
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+.appSub {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.appBody {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 14px;
+    min-height: 0;
+}
+
+.mapPane {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(27, 58, 82, .8);
+    border-radius: 12px;
+    background: radial-gradient(900px 500px at 50% 30%, rgba(0, 200, 255, .10), rgba(0, 0, 0, .10));
+    position: relative;
+    overflow: hidden;
+}
+
+.view {
+    display: none;
+    padding: 18px;
+    overflow: auto;
+    height: 100%;
+    min-height: 0;
+}
+
+.view.active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+.mapPlaceholder {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mapBig {
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 18px;
+}
+
+.mapSmall {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.infoPane {
+    min-height: 0;
+    border: 1px solid rgba(27, 58, 82, .8);
+    border-radius: 12px;
+    background: rgba(0, 0, 0, .16);
+    padding: 12px;
+}
+
+.infoHeader {
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 900;
+    border-bottom: 1px solid rgba(27, 58, 82, .8);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.infoBlock {
+    padding: 10px;
+    border: 1px solid rgba(27, 58, 82, .7);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, .14);
+    margin-bottom: 10px;
+}
+
+.infoKey {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.infoVal {
+    margin-top: 6px;
+    font-weight: 800;
+}
+
+/* ==========================================================
+   SIDEBAR DRAWER // TERMINAL REFINED
+   Similar feel to the reference image, but kept in your palette
+   ========================================================== */
+
+.sideNav {
+    position: absolute;
+    top: 62px;
+    bottom: 0;
+    right: 100%;
+    width: 292px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0, 200, 255, .14);
+    border-right: none;
+    border-radius: 14px 0 0 14px;
+    background:
+        linear-gradient(180deg, rgba(11, 28, 42, .94), rgba(6, 17, 27, .96));
+    box-shadow:
+        0 0 0 1px rgba(0, 200, 255, .05),
+        18px 0 40px rgba(0, 0, 0, .45);
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 220ms ease, opacity 160ms ease;
+    z-index: 30;
+    overflow: hidden;
+}
+
+.sideNav.open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sideHdr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 16px 14px;
+    border-bottom: 1px solid rgba(27, 58, 82, .75);
+    background: linear-gradient(90deg, rgba(0, 200, 255, .08), rgba(0, 0, 0, 0));
+}
+
+.sideTitle {
+    font-weight: 900;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.sideClose {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 200, 255, .22);
+    background: rgba(0, 200, 255, .08);
+    color: var(--text);
+    cursor: pointer;
+}
+
+.sideBtns {
+    padding: 14px;
+    display: grid;
+    gap: 10px;
+    overflow: auto;
+    align-content: start;
+}
+
+.sideBtn {
+    width: 100%;
+    text-align: left;
+    border: 1px solid rgba(0, 200, 255, .16);
+    background: linear-gradient(90deg, rgba(0, 200, 255, .06), rgba(0, 0, 0, .10));
+    color: var(--text);
+    padding: 12px 14px;
+    border-radius: 12px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    font-weight: 900;
+    cursor: pointer;
+    font-size: 11px;
+    transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+}
+
+.sideBtn:hover {
+    border-color: rgba(0, 200, 255, .28);
+    box-shadow: 0 0 0 1px rgba(0, 200, 255, .08);
+}
+
+.sideBtn.active {
+    border-color: rgba(0, 200, 255, .45);
+    background: linear-gradient(90deg, rgba(0, 200, 255, .14), rgba(0, 0, 0, .10));
+    box-shadow: 0 0 18px rgba(0, 200, 255, .08);
+}
+
+.sideSep {
+    height: 1px;
+    background: rgba(27, 58, 82, .8);
+    margin: 6px 0;
+}
+
+.sideOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, .35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+    z-index: 25;
+}
+
+.sideOverlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Dock button */
+.menuDock {
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 54px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: rgba(6, 17, 27, 0.72);
+    box-shadow: 0 0 0 1px rgba(0, 200, 255, .06);
+    cursor: pointer;
+    z-index: 50;
+}
+
+.menuDock:hover {
+    border-color: rgba(0, 200, 255, 0.40);
+}
+
+.menuArrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(6, 17, 27, 0.55);
+    position: relative;
+    cursor: pointer;
+}
+
+.menuArrow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 10px;
+    height: 10px;
+    border-left: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
     transform: rotate(-135deg);
-    /* points RIGHT */
+    opacity: 0.9;
+}
+
+.menuArrow.open::before {
+    transform: rotate(45deg);
+}
+
+.app.hasSidebar .menuDock {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ==========================================================
+   MUSIC HUD // REFINED PLAYER
+   ========================================================== */
+
+.musicHud {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    z-index: 60;
+    width: 320px;
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 200, 255, .18);
+    background: rgba(0, 0, 0, .26);
+    box-shadow:
+        0 0 0 1px rgba(0, 200, 255, .08),
+        0 20px 70px rgba(0, 0, 0, .6);
+    backdrop-filter: blur(6px);
+}
+
+.musicInfo {
+    min-width: 0;
+    display: grid;
+    gap: 4px;
+}
+
+.musicLabel {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 900;
+}
+
+.musicTrack {
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.musicArtist,
+.musicAlbum {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.musicProgressWrap {
+    display: grid;
+    gap: 6px;
+}
+
+.musicTimes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    color: var(--text);
+}
+
+.musicProgress {
+    width: 100%;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .12);
+    overflow: hidden;
+    position: relative;
+}
+
+.musicProgressBar {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: var(--accent2);
+    box-shadow: 0 0 10px rgba(70, 227, 255, .35);
+}
+
+.musicControls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.musicControlGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mBtn {
+    border: 1px solid rgba(0, 200, 255, .28);
+    background: rgba(0, 200, 255, .10);
+    color: var(--text);
+    padding: 7px 11px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 900;
+}
+
+.mBtn:hover {
+    box-shadow: 0 0 14px rgba(0, 200, 255, .2);
+}
+
+.mBtn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.mVol {
+    width: 110px;
+}
+
+.musicHud.playing {
+    box-shadow:
+        0 0 0 1px rgba(0, 200, 255, .12),
+        0 0 20px rgba(0, 200, 255, .12),
+        0 20px 70px rgba(0, 0, 0, .6);
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 1180px) {
+    .sideNav {
+        right: auto;
+        left: 0;
+        border-radius: 0 14px 14px 0;
+        border-right: 1px solid rgba(0, 200, 255, .14);
+        border-left: none;
+        transform: translateX(-100%);
+        opacity: 1;
+        pointer-events: none;
+    }
+
+    .sideNav.open {
+        transform: translateX(0);
+        pointer-events: auto;
+    }
+}
+
+@media (max-width: 980px) {
+    .telemetry,
+    .hud-right {
+        display: none;
+    }
+
+    .appBody {
+        grid-template-columns: 1fr;
+    }
+
+    .infoPane {
+        display: none;
+    }
+
+    .musicHud {
+        width: min(320px, calc(100vw - 24px));
+        right: 12px;
+        bottom: 12px;
+    }
 }
